@@ -30,6 +30,16 @@ class Matrix {
     public double retrieveELMT(int i, int j) {
         return this.mat[i][j];
     }
+    //Men-output/mengeprint matriks
+    public void printMat() {
+        System.out.println("Matriks : ");
+        for (int i = 0; i < nRow; i++) {
+            for (int j = 0; j < nCol; j++) {
+                System.out.print(mat[i][j] + " ");
+            }
+            System.out.println();
+        }
+    }
 
     //Transpose matriks
     public Matrix transpose() {
