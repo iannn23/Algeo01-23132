@@ -1,3 +1,5 @@
+import java.util.Scanner;
+
 class Matrix {
     double[][] mat;
     int nRow, nCol;
@@ -9,7 +11,18 @@ class Matrix {
         mat = new double[nRow][nCol];
     }
 
-    //Memasukkan nilai ke matriks
+    //Memasukkan nilai ke matriks secara manual (dari input)
+    public void readMat() {
+        Scanner sc = new Scanner(System.in);
+        for (int i=0; i<nRow; i++) {
+            for (int j=0; j<nCol; j++) {
+                mat[i][j] = sc.nextDouble();
+            }
+        }
+        sc.nextLine();
+        sc.close();
+    }
+    //Memasukkan nilai ke matriks dari function
     public void inputELMT(int i, int j, double val) {
         this.mat[i][j] = val;
     }
