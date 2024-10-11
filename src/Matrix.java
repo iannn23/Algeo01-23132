@@ -33,8 +33,8 @@ class Matrix {
     //Men-output/mengeprint matriks
     public void printMat() {
         System.out.println("Matriks : ");
-        for (int i = 0; i < nRow; i++) {
-            for (int j = 0; j < nCol; j++) {
+        for (int i=0; i<nRow; i++) {
+            for (int j=0; j<nCol; j++) {
                 System.out.print(mat[i][j] + " ");
             }
             System.out.println();
