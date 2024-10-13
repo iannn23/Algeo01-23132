@@ -52,7 +52,8 @@ class Matrix {
         return mT;
     }
 
-    public double determinant() {
+    //Determinan Matriks (ekspansi kofaktor)
+    public double determinantCof() {
         if (nRow==nCol) {
             if (nRow==1) return retrieveELMT(0, 0);
             
@@ -62,7 +63,7 @@ class Matrix {
                 //m[0][j] = a_1j
                 if (retrieveELMT(0,j)!=0) {
                     Matrix subMat = new Matrix(nRow-1, nCol-1);
-                    //submatrix M_ij
+                    //submatriks M_ij
                     int iSub = 0;
                     for (int i=1; i<=nRow-1; i++) {
                         int jSub = 0;
@@ -74,9 +75,9 @@ class Matrix {
                         }
                         iSub++;
                     }
-                    //Determinant = ((-1)^(i+j)) * a_ij * |M_ij|
-                    //note: i & j starts from 1; but in code starts from 0
-                    det += plusMinus * retrieveELMT(0, j) * subMat.determinant(); //rekursif
+                    //Determinan = ((-1)^(i+j)) * a_ij * |M_ij|
+                    //note: i & j di rumus dimulai dari 1; kalau di kode dari 0
+                    det += plusMinus * retrieveELMT(0, j) * subMat.determinantCof(); //rekursif
                 }
                 plusMinus *= -1;
             }
