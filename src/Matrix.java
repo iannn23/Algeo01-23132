@@ -82,6 +82,6 @@ class Matrix {
             }
             return det;
         }
-        return 0;
+        return 0; //return nothing (caranya gimana?)
     }
 }
