@@ -52,6 +52,74 @@ class Matrix {
         return mT;
     }
 
+    //Copy matriks
+    public Matrix copyMat() {
+        Matrix mCopied = new Matrix(nRow, nCol);
+        for (int i=0; i<=nRow-1; i++) {
+            for (int j=0; j<=nCol-1; j++) {
+                mCopied.mat[i][j] = mat[i][j];
+            }
+        }
+        return mCopied;
+    }
+    
+    /***Determinan Matriks (Reduksi Baris)***/
+    //Ganti dua baris
+    int swapCount = 0; //(yang saya ragu di sini)
+    public void swapRow(int row1, int row2) {
+        double[] temp = mat[row1];
+        mat[row1] = mat[row2];
+        mat[row2] = temp;
+        swapCount++;
+    }
+    //Penyederhanaan/Pembagian 1 baris dengan bilangan
+    int divMult = 1; //(yang saya ragu di sini)
+    public void divRowByNum(int row, double div) {
+        for (int j=0; j<=nCol-1; j++) {
+            mat[row][j] /= div;
+        }
+        divMult *= div;
+    }
+    //Reduksi baris
+    public void rowRed() {
+        if (nRow==nCol) {
+            Matrix mReduced = this.copyMat();
+            for (int pivot=0; pivot<=nRow-1; pivot++) {
+                if (mat[pivot][pivot]==0) {
+                    for (int i=pivot+1; i<=nRow-1; i++) {
+                        if (mat[i][pivot] != 0) {
+                            swapRow(pivot, i);
+                            break;
+                        }
+                    }
+                }
+                //(bagaimana jika setelah swapRow, mat[pivot][pivot] tetap 0?)
+
+                divRowByNum(pivot, mat[pivot][pivot]);
+
+                //buat nilai di bawah pivot = 0
+                for (int i=pivot+1; i<=nRow-1; i++) {
+                    for (int j=pivot; j<=nCol-1; j++) {
+                        mReduced.mat[i][j] = mReduced.mat[i][j] - (mReduced.mat[i][pivot]/mReduced.mat[pivot][pivot]) * mReduced.mat[pivot][j];
+                    }
+                }         
+            }
+        }
+    }
+    //Determinan Matriks (reduksi baris)
+    public double determinantRed() {
+        int detMult = 1;
+        int plusMinus = 1;
+        int swapCount = 0; //reset variabel tiap kali fungsi det dipakai (yang saya ragu di sini)
+        double divMult = 1.0; //reset variabel tiap kali fungsi det dipakai (yang saya ragu di sini)
+        
+        rowRed(); //(masalahnya matriks originalnya jadi berubah)
+        for (int i=0; i<=nRow-1; i++) detMult *= mat[i][i];
+        if (swapCount%2 == 1) plusMinus *= -1;
+        double det = plusMinus * divMult * detMult;
+        return det;
+    }
+
     //Determinan Matriks (ekspansi kofaktor)
     public double determinantCof() {
         if (nRow==nCol) {
