@@ -16,7 +16,7 @@ class Matrix {
         Scanner sc = new Scanner(System.in);
         for (int i=0; i<nRow; i++) {
             for (int j=0; j<nCol; j++) {
-                mat[i][j] = sc.nextDouble();
+                mat[i][j] = Double.valueOf(sc.next());
             }
         }
         sc.nextLine();
