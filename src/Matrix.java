@@ -153,4 +153,32 @@ class Matrix {
         }
         return 0; //return nothing (caranya gimana?)
     }
+    
+    //Aturan Cramer
+    public Matrix cramer() {
+        //Copy matriks keseluruhan ke A kecuali kolom terakhir
+        Matrix A = new Matrix(nRow, nCol-1);
+        for (int i=0; i<=nRow-1; i++) {
+            for (int j=0; j<=nCol-2; j++) { //kecuali kolom terakhir
+                A.mat[i][j] = mat[i][j];
+            }
+        }
+        //mendapat matriks b
+        Matrix b = new Matrix(nRow,1);
+        for (int i=0; i<=nRow; i++) {
+            b.mat[i][0] = mat[i][nCol-1];
+        }
+
+        Matrix detXi = new Matrix(nRow, 1);
+        //mengganti kolom matriks A menjadi matriks b,
+        //menyimpan det(A_i) ke matriks baru
+        for (int j=0; j<=nCol; j++) {
+            Matrix Ai = A.copyMat();
+            for (int i=0; i<=nRow-1; i++) {
+                Ai.mat[i][j] = b.mat[i][0];
+            }
+            detXi.mat[j][0] = Ai.determinantCof() / A.determinantCof();
+        }
+        return detXi;
+    }
 }
