@@ -296,36 +296,37 @@ public class Matrix {
         for (int i = 0; i < n; i++) {
             int pivotRow = i;
             if (i < matrix.nCol){
-            while (pivotRow < n && matrix.getElmt(pivotRow, i) == 0) {
-                pivotRow++;
-            }
-            //Pivot ketermu
-            if (pivotRow == n) {
-                continue;
-            }
-
-            if (matrix.getElmt(pivotRow, i) != 1) {
-                double pivotValue = matrix.getElmt(pivotRow, i);
-                for (int j = i; j < m; j++) {
-                    matrix.setElmt(pivotRow, j, matrix.getElmt(pivotRow, j) / pivotValue);
+                while (pivotRow < n && matrix.getElmt(pivotRow, i) == 0) {
+                    pivotRow++;
                 }
-            }
-            
-            // Tukar baris pivot dengan baris saat ini
-            for (int j = i; j < m; j++) {
-                double temp = matrix.getElmt(i, j);
-                matrix.setElmt(i, j, matrix.getElmt(pivotRow, j));
-                matrix.setElmt(pivotRow, j, temp);
-            }
+                
+                //Pivot ketermu
+                if (pivotRow == n) {
+                    continue;
+                }
 
-            for (int j = i + 1; j < n; j++) {
-                double factor = matrix.getElmt(j, i);
-                for (int k = i; k < m; k++) {
-                    matrix.setElmt(j, k, matrix.getElmt(j, k) - factor * matrix.getElmt(i, k));
+                if (matrix.getElmt(pivotRow, i) != 1) {
+                    double pivotValue = matrix.getElmt(pivotRow, i);
+                    for (int j = i; j < m; j++) {
+                        matrix.setElmt(pivotRow, j, matrix.getElmt(pivotRow, j) / pivotValue);
+                    }
+                }
+                
+                // Tukar baris pivot dengan baris saat ini
+                for (int j = i; j < m; j++) {
+                    double temp = matrix.getElmt(i, j);
+                    matrix.setElmt(i, j, matrix.getElmt(pivotRow, j));
+                    matrix.setElmt(pivotRow, j, temp);
+                }
+
+                for (int j = i + 1; j < n; j++) {
+                    double factor = matrix.getElmt(j, i);
+                    for (int k = i; k < m; k++) {
+                        matrix.setElmt(j, k, matrix.getElmt(j, k) - factor * matrix.getElmt(i, k));
+                    }
                 }
             }
         }
-    }
 
         for (int i = 0 ; i < n ; i++) {
             int allZero = 1 ;
@@ -339,10 +340,10 @@ public class Matrix {
                 for (int k = i ; k < n - 1 ; k++) {
                     for (int j = 0 ; j < m ; j++) {
                         matrix.rowSwap(matrix, k, k+1);
+                    }
                 }
             }
         }
-    }
 
         for (int i = 0; i < n; i++) {
             int pivotColl = 0;
@@ -380,25 +381,24 @@ public class Matrix {
                     else if (matrix.getElmt(i, m-2) > 0 && matrix.getElmt(i, m-2) < 0) {
                         for (int k = 0; k < m ; k++) {
                             matrix.setElmt(j, k, matrix.getElmt(j, k) + matrix.getElmt(i, k));
-                }
-            }
+                        }
+                    }
                     else if (matrix.getElmt(i, m-2) > 0 && matrix.getElmt(i, m-2) > 0) {
                         for (int k = 0; k < m ; k++) {
                             matrix.setElmt(j, k, matrix.getElmt(j, k) - matrix.getElmt(i, k));
-                }
-            }
+                        }
+                    }
                     else if (matrix.getElmt(i, m-2) < 0 && matrix.getElmt(i, m-2) < 0) {
                         for (int k = 0; k < m ; k++) {
                             matrix.setElmt(j, k, matrix.getElmt(j, k) - matrix.getElmt(i, k));
+                        }
+                    }
                 }
             }
         }
-            }
-        }
-        if ( n > m) {
+        if (n > m) {
             Matrix.solveManySolution(matrix);
-        }
-        else {
+        } else {
             backSubstitution(matrix, X);
         }
         return matrix;
