@@ -16,6 +16,10 @@ public class Matrix {
         nCol = column;
         mat = new double[nRow][nCol];
     }
+    //jika jumlah baris dan kolom bervariasi
+    public Matrix() {
+        this(0,0);
+    }
 
     // Memasukkan nilai ke matriks secara manual (dari input)
     public void readMat() {
@@ -30,32 +34,35 @@ public class Matrix {
     }
     // Memasukkan nilai ke matriks dari file
     public void readMatFile(String fileName) {
-        try {
-            Scanner checkMatFile = new Scanner(new BufferedReader(new FileReader("../matrix/"+fileName+".txt")));
-            Scanner matFile = new Scanner(new BufferedReader(new FileReader("../matrix/"+fileName+".txt"))); //agar dapat baca ulang dari atas
-            while(checkMatFile.hasNextLine()) {
-                if (this.nRow==0) {
-                    nCol = (checkMatFile.nextLine().trim().replaceAll(" +", " ").split(" ")).length; // menghapus whitespace
-                } else checkMatFile.nextLine();
-                this.nRow++;
+        try (BufferedReader br = new BufferedReader(new FileReader("../matrix/"+fileName+".txt"))) {
+            String line;
+            int colCount = 0;
+            int rowCount = 0;
+
+            while ((line=br.readLine()) != null) {
+                String[] values = line.trim().split("\\s+");
+                colCount = Math.max(colCount, values.length);
+                rowCount++;
             }
-            this.mat = new double[nRow][nCol];
-            
-            while (matFile.hasNextLine()) {
-                for (int i=0; i<this.nRow;i++) {
-                    String[] rowI = matFile.nextLine().trim().replaceAll(" +", " ").split(" ");
-                    for (int j=0; j<=rowI.length-1; j++) {
-                        this.mat[i][j] = Double.parseDouble(rowI[j]);
+
+            nRow = rowCount;
+            nCol = colCount;
+            mat = new double[nRow][nCol];
+
+            try (BufferedReader lines = new BufferedReader(new FileReader("../matrix/"+fileName+".txt"))) {
+                int currRow = 0;
+                while ((line=lines.readLine()) != null) {
+                    String[] values = line.trim().split("\\s+");
+                    for (int j=0; j<values.length; j++) {
+                        mat[currRow][j] = Double.parseDouble(values[j]);
                     }
+                    currRow++;
                 }
+            } catch (IOException e) {
+                System.out.println("Terdapat error saat membuka file.");;
             }
-
-            if (checkMatFile != null) checkMatFile.close();
-            if (matFile != null) matFile.close();
-
-        } catch (FileNotFoundException e) {
-            this.nRow = 0; this.nCol = 0;
-            System.out.println("File tidak ditemukan.");
+        } catch (IOException e) {
+            System.out.println("Terdapat error saat membuka file.");;
         }
     }
 
@@ -604,13 +611,5 @@ public class Matrix {
             }
         }
         return inverse;
-    }
-
-    public static void main(String[] args) {
-        Matrix mat = new Matrix(3, 4);
-        mat.readMat();
-        mat.printMat();
-        Matrix A = mat.matrixA();
-        A.printMat();
     }
 }
