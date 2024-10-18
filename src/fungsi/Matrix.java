@@ -1,4 +1,3 @@
-import java.time.format.TextStyle;
 import java.util.Scanner;
 
 public class Matrix {
@@ -504,6 +503,64 @@ public class Matrix {
         return this;
     }
 
+    }
+
+    private void getCofactor (double[][] matrix, double[][] temp, int p, int q, int n){
+        int i = 0, j = 0;
+        for (int row = 0; row < n; row++){
+            for (int col = 0; col < n; col++){
+                if (row != p && col != q){
+                    temp[i][j++] = matrix[row][col];
+                    if (j == n - 1){
+                        j = 0;
+                        i++;
+                    }
+                }
+            }
+        }
+
+
+    }
+    public Matrix cofMatrix(){
+        Matrix cofactor = new Matrix(nRow, nCol);
+        for (int i=0; i<nRow; i++){
+            for (j=0; j<nCol; j++){
+               getCofactor(mat, temp, i, j, nRow);
+               cofactor.set(i, j, (float) Math.pow(-1, i + j) * determinantCof(temp, nRow - 1));
+            }
+        }
+        return cofactor;
+    }
+
+    public Matrix adjugate(){
+        matrix cofactor = cofMatrix();
+        matrix adjugate = new Matrix(nRow, nCol);
+        for (int i=0; i<nRow; i++){
+            for (int j=0; j<nCol; j++){
+                adjugate.set(i, j, cofactor.get(j, i));
+            }
+        }
+        return adjugate;
+    }
+
+    public void Invers(){
+        //kalau determinannya == 0  error
+        float det = determinantCof();
+        if  (det == 0){
+            System.out.println("Determinan = 0 ");
+            return mat;
+        }
+        Matrix adj = adjugate();
+        Matrix inverse = new Matrix(nRow, nCol);
+        for (int i=0; i<nRow; i++){
+            for (int j=0; j<nCol; j++){
+                inverse.set(i, j, adj.get(i, j) / det);
+            }
+        }
+        return inverse; 
+
+    }
+    
 }
 
     
