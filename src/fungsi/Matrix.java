@@ -1,5 +1,10 @@
 import java.util.Scanner;
 import java.math.*;
+import java.io.File;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.FileNotFoundException;
 
 public class Matrix {
     double[][] mat;
@@ -22,6 +27,36 @@ public class Matrix {
         }
         sc.nextLine();
         sc.close();
+    }
+    // Memasukkan nilai ke matriks dari file
+    public void readMatFile(String fileName) {
+        try {
+            Scanner checkMatFile = new Scanner(new BufferedReader(new FileReader("../matrix/"+fileName+".txt")));
+            Scanner matFile = new Scanner(new BufferedReader(new FileReader("../matrix/"+fileName+".txt"))); //agar dapat baca ulang dari atas
+            while(checkMatFile.hasNextLine()) {
+                if (this.nRow==0) {
+                    nCol = (checkMatFile.nextLine().trim().replaceAll(" +", " ").split(" ")).length; // menghapus whitespace
+                } else checkMatFile.nextLine();
+                this.nRow++;
+            }
+            this.mat = new double[nRow][nCol];
+            
+            while (matFile.hasNextLine()) {
+                for (int i=0; i<this.nRow;i++) {
+                    String[] rowI = matFile.nextLine().trim().replaceAll(" +", " ").split(" ");
+                    for (int j=0; j<=rowI.length-1; j++) {
+                        this.mat[i][j] = Double.parseDouble(rowI[j]);
+                    }
+                }
+            }
+
+            if (checkMatFile != null) checkMatFile.close();
+            if (matFile != null) matFile.close();
+
+        } catch (FileNotFoundException e) {
+            this.nRow = 0; this.nCol = 0;
+            System.out.println("File tidak ditemukan.");
+        }
     }
 
     // Setter dan Getter
@@ -562,5 +597,3 @@ public class Matrix {
         return inverse;
     }
 }
-
-    
