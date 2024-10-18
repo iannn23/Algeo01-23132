@@ -1,4 +1,5 @@
 import java.util.Scanner;
+import java.math.*;
 
 public class Matrix {
     double[][] mat;
@@ -257,17 +258,18 @@ public class Matrix {
             for (int j = 0; j < nCol; j++) {
                 if (retrieveELMT(0, j) != 0) {
                     Matrix subMat = new Matrix(nRow - 1, nCol - 1);
-                    int iSub = 0;
-                    for (int i = 1; i < nRow; i++) {
-                        int jSub = 0;
-                        for (int k = 0; k < nCol; k++) {
-                            if (k != j) {
-                                subMat.inputELMT(iSub, jSub, retrieveELMT(i, k));
-                                jSub++;
-                            }
-                        }
-                        iSub++;
-                    }
+                    this.getCofactor(subMat, 0, j, nRow);
+                    // int iSub = 0;
+                    // for (int i = 1; i < nRow; i++) {
+                    //     int jSub = 0;
+                    //     for (int k = 0; k < nCol; k++) {
+                    //         if (k != j) {
+                    //             subMat.inputELMT(iSub, jSub, retrieveELMT(i, k));
+                    //             jSub++;
+                    //         }
+                    //     }
+                    //     iSub++;
+                    // }
                     det += plusMinus * retrieveELMT(0, j) * subMat.determinantCof(); // Rekursif
                 }
                 plusMinus *= -1;
@@ -503,15 +505,13 @@ public class Matrix {
         return this;
     }
 
-    }
-
-    private void getCofactor (double[][] matrix, double[][] temp, int p, int q, int n){
+    private void getCofactor (Matrix temp, int p, int q, int n){
         int i = 0, j = 0;
-        for (int row = 0; row < n; row++){
-            for (int col = 0; col < n; col++){
-                if (row != p && col != q){
-                    temp[i][j++] = matrix[row][col];
-                    if (j == n - 1){
+        for (int row = 0; row < n; row++) {
+            for (int col = 0; col < n; col++) {
+                if (row != p && col != q) {
+                    temp.setElmt(i, j++, getElmt(row, col));
+                    if (j == n - 1) {
                         j = 0;
                         i++;
                     }
@@ -523,44 +523,44 @@ public class Matrix {
     }
     public Matrix cofMatrix(){
         Matrix cofactor = new Matrix(nRow, nCol);
+        Matrix temp = new Matrix(nRow-1, nCol-1);
         for (int i=0; i<nRow; i++){
-            for (j=0; j<nCol; j++){
-               getCofactor(mat, temp, i, j, nRow);
-               cofactor.set(i, j, (float) Math.pow(-1, i + j) * determinantCof(temp, nRow - 1));
+            for (int j=0; j<nCol; j++){
+               this.getCofactor(temp, i, j, nRow);
+               double cofactorVal = Math.pow(-1, i+j) * temp.determinantCof();
+               cofactor.setElmt(i, j, cofactorVal);
             }
         }
         return cofactor;
     }
 
     public Matrix adjugate(){
-        matrix cofactor = cofMatrix();
-        matrix adjugate = new Matrix(nRow, nCol);
+        Matrix cofactor = cofMatrix();
+        Matrix adjugate = new Matrix(nRow, nCol);
         for (int i=0; i<nRow; i++){
             for (int j=0; j<nCol; j++){
-                adjugate.set(i, j, cofactor.get(j, i));
+                adjugate.setElmt(i, j, cofactor.getElmt(j, i));
             }
         }
         return adjugate;
     }
 
-    public void Invers(){
+    public Matrix Invers(){
         //kalau determinannya == 0  error
-        float det = determinantCof();
+        double det = determinantCof();
         if  (det == 0){
             System.out.println("Determinan = 0 ");
-            return mat;
+            return null;
         }
         Matrix adj = adjugate();
         Matrix inverse = new Matrix(nRow, nCol);
         for (int i=0; i<nRow; i++){
             for (int j=0; j<nCol; j++){
-                inverse.set(i, j, adj.get(i, j) / det);
+                inverse.setElmt(i, j, adj.getElmt(i, j) / det);
             }
         }
-        return inverse; 
-
+        return inverse;
     }
-    
 }
 
     
