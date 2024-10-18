@@ -304,13 +304,13 @@ public class Matrix {
 
     // Determinan Matriks (ekspansi kofaktor)
     public double determinantCof() {
-        if (nRow == nCol) {
-            if (nRow == 1) return retrieveELMT(0, 0);
+        if (this.nRow == this.nCol) {
+            if (this.nRow == 1) return this.retrieveELMT(0, 0);
 
             double det = 0.0;
             int plusMinus = 1;
             for (int j = 0; j < nCol; j++) {
-                if (retrieveELMT(0, j) != 0) {
+                if (this.retrieveELMT(0, j) != 0) {
                     Matrix subMat = new Matrix(nRow - 1, nCol - 1);
                     this.getCofactor(subMat, 0, j, nRow);
                     // int iSub = 0;
@@ -333,10 +333,10 @@ public class Matrix {
         return 0; // Matriks tidak persegi
     }
 
-    // Aturan Cramer
+    // Aturan Cramer (NOTE: PAKAI MATRIKS AUGMENTED, jangan matriks A langsung)
     public Matrix cramer() {
-        Matrix A = matrixA();
-        Matrix b = matrixb();
+        Matrix A = this.matrixA();
+        Matrix b = this.matrixb();
 
         Matrix detXi = new Matrix(nRow, 1);
         double detA = A.determinantCof();
@@ -604,5 +604,13 @@ public class Matrix {
             }
         }
         return inverse;
+    }
+
+    public static void main(String[] args) {
+        Matrix mat = new Matrix(3, 4);
+        mat.readMat();
+        mat.printMat();
+        Matrix A = mat.matrixA();
+        A.printMat();
     }
 }
