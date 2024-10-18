@@ -59,6 +59,25 @@ public class Matrix {
         }
     }
 
+    // Mendapat matriks A dari matriks augmented
+    public Matrix matrixA() {    
+        Matrix A = new Matrix(nRow, nCol - 1);
+        for (int i = 0; i < nRow; i++) {
+            for (int j = 0; j < nCol - 1; j++) { // Kecuali kolom terakhir
+                A.mat[i][j] = mat[i][j];
+            }
+        }
+        return A;
+    }
+    // Mendapat matriks b dari matriks augmented
+    public Matrix matrixb() {
+        Matrix b = new Matrix(nRow, 1);
+        for (int i = 0; i < nRow; i++) {
+            b.mat[i][0] = mat[i][nCol - 1];
+        }
+        return b;
+    }
+
     // Setter dan Getter
     public void setElmt(int i, int j, double elmt) {
         mat[i][j] = elmt;
@@ -316,18 +335,8 @@ public class Matrix {
 
     // Aturan Cramer
     public Matrix cramer() {
-        // Copy matriks A (kecuali kolom terakhir)
-        Matrix A = new Matrix(nRow, nCol - 1);
-        for (int i = 0; i < nRow; i++) {
-            for (int j = 0; j < nCol - 1; j++) { // Kecuali kolom terakhir
-                A.mat[i][j] = mat[i][j];
-            }
-        }
-        // Mendapat matriks b
-        Matrix b = new Matrix(nRow, 1);
-        for (int i = 0; i < nRow; i++) {
-            b.mat[i][0] = mat[i][nCol - 1];
-        }
+        Matrix A = matrixA();
+        Matrix b = matrixb();
 
         Matrix detXi = new Matrix(nRow, 1);
         double detA = A.determinantCof();
