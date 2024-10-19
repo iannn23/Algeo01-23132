@@ -1,3 +1,5 @@
+package fungsi;
+
 import java.util.Scanner;
 import java.math.*;
 import java.io.File;
@@ -34,7 +36,7 @@ public class Matrix {
     }
     // Memasukkan nilai ke matriks dari file
     public void readMatFile(String fileName) {
-        try (BufferedReader br = new BufferedReader(new FileReader("../matrix/"+fileName+".txt"))) {
+        try (BufferedReader br = new BufferedReader(new FileReader("../test/"+fileName+".txt"))) {
             String line;
             int colCount = 0;
             int rowCount = 0;
@@ -49,7 +51,7 @@ public class Matrix {
             nCol = colCount;
             mat = new double[nRow][nCol];
 
-            try (BufferedReader lines = new BufferedReader(new FileReader("../matrix/"+fileName+".txt"))) {
+            try (BufferedReader lines = new BufferedReader(new FileReader("../test/"+fileName+".txt"))) {
                 int currRow = 0;
                 while ((line=lines.readLine()) != null) {
                     String[] values = line.trim().split("\\s+");
@@ -59,10 +61,10 @@ public class Matrix {
                     currRow++;
                 }
             } catch (IOException e) {
-                System.out.println("Terdapat error saat membuka file.");;
+                System.out.println("Terdapat error saat membuka file: "+e.getMessage());;
             }
         } catch (IOException e) {
-            System.out.println("Terdapat error saat membuka file.");;
+            System.out.println("Terdapat error saat membuka file: "+e.getMessage());;
         }
     }
 
@@ -468,8 +470,6 @@ public class Matrix {
             this.solveManySolution();
         } else {
             backSubstitution(X);
-            // Anda mungkin ingin menambahkan kode untuk menampilkan atau mengembalikan solusi X
-            // Misalnya:
             System.out.println("Solusi:");
             for (int i = 0; i < X.length; i++) {
                 System.out.printf("X%d = %.4f%n", i + 1, X[i]);
@@ -556,7 +556,7 @@ public class Matrix {
         return this;
     }
 
-    private void getCofactor (Matrix temp, int p, int q, int n){
+    public void getCofactor (Matrix temp, int p, int q, int n){
         int i = 0, j = 0;
         for (int row = 0; row < n; row++) {
             for (int col = 0; col < n; col++) {
