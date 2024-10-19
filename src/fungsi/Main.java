@@ -1,3 +1,6 @@
+package fungsi;
+
+import fungsi.Matrix;
 import java.util.Scanner;
 
 public class Main {
