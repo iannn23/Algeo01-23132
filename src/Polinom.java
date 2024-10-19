@@ -20,12 +20,36 @@ public class Polinom {
         sc.close();
         return matPoint;
     }
-
-    //baca nilai x (yang akan ditaksir nilai fungsinya) dari keyboard
+    // baca nilai x (yang akan ditaksir nilai fungsinya) dari keyboard
     public double readX() {
         Scanner sc = new Scanner(System.in);
         double x = sc.nextDouble();
         sc.close();
+        return x;
+    }
+
+    // baca dari file
+    public static Matrix readFile(Matrix mat) {
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Masukkan nama file teks: ");
+        String fileName = sc.nextLine();
+        mat.readMatFile(fileName);
+        sc.close();
+        return mat;
+    }
+    //pisah titik pada file dari nilai x yang akan ditaksir
+    public static Matrix readPointFile(Matrix matPointAndX) {
+        Matrix matPoint = new Matrix(matPointAndX.getRowLength()-1,2);
+        for (int i=0; i<=matPointAndX.getRowLength()-2; i++) { //baris terakhir tidak termasuk
+            for (int j=0; j<=1; j++) {
+                matPoint.setElmt(i, j, matPointAndX.retrieveELMT(i, j));
+            }
+        }
+        return matPoint;
+    }
+    //pisah x yang akan ditaksir pada file dari titik
+    public static double readXFile(Matrix matPointAndX) {
+        double x = matPointAndX.getElmt(matPointAndX.getRowLength()-1,0);
         return x;
     }
 
@@ -75,4 +99,16 @@ public class Polinom {
         }
         return taksiran;
     }
+
+    // CONTOH:
+    // public static void main(String[] args) {
+    //     Matrix mat2 = new Matrix();
+    //     Matrix matPointAndX = readFile(mat2);
+
+    //     Matrix matPoint = readPointFile(matPointAndX);
+    //     matPoint.printMat();
+
+    //     double x = readXFile(matPointAndX);
+    //     System.out.println("x = "+x);
+    // }
 }
