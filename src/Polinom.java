@@ -55,8 +55,7 @@ public class Polinom {
 
     // persamaan linear
     public static Matrix createLinearEq(Matrix point) {
-        int n = point.getRowLength();
-        Matrix linearEq = new Matrix(n, n+1);
+        Matrix linearEq = new Matrix(point.getRowLength(), point.getRowLength()+1);
         for (int i=0; i<=linearEq.getRowLength()-1; i++) {
             for (int j=0; j<=linearEq.getColLength()-1; j++) {
                 if (j==linearEq.getColLength()-1) {
