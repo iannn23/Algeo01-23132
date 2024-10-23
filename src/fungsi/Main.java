@@ -9,7 +9,7 @@ public class Main {
         boolean state = true;
 
         while (state) {
-            System.out.println("Loading....................");
+            System.out.println("Loading....................\n");
             System.out.println("Menu");
             System.out.println("1. Sistem Persamaan Linier");
             System.out.println("2. Determinan");
@@ -26,7 +26,6 @@ public class Main {
                 System.out.println("Pilihan yang anda masukkan tidak valid, silahkan input ulang :");
                 pilihan = sc.nextInt();
             }
-            
             if (pilihan == 1) {
                 System.out.println("Loading....................");
                 System.out.println("1. Metode eliminasi Gauss");
@@ -90,6 +89,14 @@ public class Main {
                     System.out.println("Pilihan yang anda masukkan tidak valid, silahkan input ulang");
                     pilihan1 = sc.nextInt();
                 }
+                System.out.println("1. Input dari Keyboard");
+                System.out.println("2. Input dari File");
+                System.out.println("Masukkan pilihan anda : ");
+                int pilihan2 = sc.nextInt();
+                while (pilihan2 < 1 || pilihan2 > 2){
+                    System.out.println("Pilihan yang anda masukkan tidak valid, silahkan input ulang");
+                    pilihan2 = sc.nextInt();
+                }
 
             } else if (pilihan == 3) {
                 System.out.println("Loading....................");
@@ -101,6 +108,14 @@ public class Main {
                     System.out.println("Pilihan yang anda masukkan tidak valid, silahkan input ulang");
                     pilihan1 = sc.nextInt();
                 }
+                System.out.println("1. Input dari Keyboard");
+                System.out.println("2. Input dari File");
+                System.out.println("Masukkan pilihan anda : ");
+                int pilihan2 = sc.nextInt();
+                while (pilihan2 < 1 || pilihan2 > 2){
+                    System.out.println("Pilihan yang anda masukkan tidak valid, silahkan input ulang");
+                    pilihan2 = sc.nextInt();
+                }
 
             } else if (pilihan == 4) {
                 System.out.println("1. Input dari Keyboard");
@@ -111,6 +126,7 @@ public class Main {
                     System.out.println("Pilihan yang anda masukkan tidak valid, silahkan input ulang");
                     pilihan2 = sc.nextInt();
                 }
+                
             } else if (pilihan == 5) {
 
             } else if (pilihan == 6) {
@@ -122,6 +138,7 @@ public class Main {
                     System.out.println("Pilihan yang anda masukkan tidak valid, silahkan input ulang");
                     pilihan2 = sc.nextInt();
                 }
+                
 
             } else if (pilihan == 7) {
 
@@ -130,7 +147,7 @@ public class Main {
             } else {
                 System.out.println("Pilihan tidak valid");
             }
-            System.out.println("Pilihan anda : " + pilihan);
+            
         }
 
     }
