@@ -32,7 +32,7 @@ public class Regresi {
     public static Matrix solveReg(Matrix mat) {
         Matrix matNormalEst = new Matrix(mat.getColLength(), mat.getColLength()+1);
         matNormalEst = MultiLinearReg(mat);
-        return matNormalEst.Invers();
+        return matNormalEst.inversadj();
     }
     // mendapat persamaan regresi
     public static String getRegEq(Matrix mat) {
