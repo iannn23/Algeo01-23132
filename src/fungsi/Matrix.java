@@ -64,6 +64,7 @@ public class Matrix {
             System.out.println("Terdapat error saat membuka file: "+e.getMessage());;
         }
     }
+
     public static Matrix readFile(Matrix mat) {
         Scanner sc = new Scanner(System.in);
         System.out.print("Masukkan nama file teks: ");
@@ -104,11 +105,26 @@ public class Matrix {
     public int getColLength() {
         return nCol;
     }
-
+    public int getLastIdxCol(){
+        return nCol-1;
+    }
     public double getElmt(int i, int j) {
         return mat[i][j];
     }
-
+    public static Matrix multiplyMatrix(Matrix m1, Matrix m2){
+		Matrix mHasil = new Matrix(m1.getRowLength(), m2.getColLength());
+		int row,col,i;	
+		for(row = 0; row< m1.getRowLength(); row++){
+			for(col = 0; col< m2.getColLength(); col++){
+				double hasil = 0;
+				for(i = 0; i< m2.getRowLength(); i++){
+					hasil += m1.getElmt(row,i)*m2.getElmt(i, col);
+				}
+				mHasil.setElmt(row, col, hasil);
+			}
+		}
+		return mHasil;
+    }
     // Menukar dua baris dalam matriks ini
     public void rowSwap(int rows1, int rows2) {
         double temp;
@@ -191,6 +207,34 @@ public class Matrix {
 			}
 		}
 		return mHasil;
+	}
+    public Matrix getMatrixConstant() {
+		Matrix mOut = new Matrix (this.getRowLength(),1);
+		int row;
+		for (row = 0 ; row < mOut.getRowLength() ; ++row) {
+			mOut.setElmt(row, 0, this.getElmt(row, this.getLastIdxCol()));
+		}
+		return mOut;
+		
+	}
+    public Matrix getMatrixCoefficient() {
+		Matrix mOut = new Matrix(this.getRowLength(),this.getColLength() - 1);
+		int row,col;
+		for (row = 0 ; row < this.getRowLength() ; ++row) {
+			for (col = 0 ; col < this.getColLength(); ++col) {
+				if (col != this.getLastIdxCol()) {
+					mOut.setElmt(row, col, this.getElmt(row, col));
+				}
+			}
+		}
+		return mOut;
+	}
+    public Matrix inverseGab() {
+		Matrix mInvers = this.getMatrixCoefficient();
+		Matrix mConstant = this.getMatrixConstant();
+		mInvers = mInvers.inversOBE();
+		Matrix mOut = multiplyMatrix(mInvers, mConstant);
+		return mOut;
 	}
 
     // Penyederhanaan/Pembagian 1 baris dengan bilangan
@@ -500,7 +544,6 @@ public class Matrix {
         }
         return this;
     }
-
     // Eliminasi Gauss-Jordan
     public Matrix gaussJordanEliminasi() {
         int n = this.getRowLength();
@@ -579,6 +622,7 @@ public class Matrix {
         return this;
     }
 
+
     public void getCofactor (Matrix temp, int p, int q, int n){
         int i = 0, j = 0;
         for (int row = 0; row < n; row++) {
@@ -607,7 +651,6 @@ public class Matrix {
         }
         return cofactor;
     }
-
     public Matrix inversOBE (){
         Matrix mat_inv = new Matrix(this.getRowLength(), this.getColLength()*2);
         int i;
@@ -692,6 +735,52 @@ public class Matrix {
             }
         }
         return mat_inv;
+    }
+    
+    public static double[] gaussNoText(Matrix mat){
+        double[] failRet = {4, 20};
+        if(mat.getRowLength() < mat.getColLength()-1) return failRet;
+        else {
+            mat = mat.gaussEliminasi();
+            int rowNonZero = mat.getRowLength();
+            boolean rowZero; boolean rowAnomaly = false;
+
+            for(int i=0;i<=mat.getRowLength()-1;i++){
+                rowZero = true;
+                for(int j=0;j<=mat.getColLength()-1;j++){
+                    if((j == mat.getColLength()-1) && (mat.getElmt(i, j) != 0)) rowAnomaly = true;
+                    if(mat.getElmt(i, j) != 0) rowZero = false; break;
+                }
+                if(rowZero) rowNonZero--;
+                if(rowAnomaly) break;
+            }
+
+            double[] x,y;
+            x = new double[rowNonZero];
+            y = new double[rowNonZero];
+
+            if((rowAnomaly) || (rowNonZero<mat.getColLength()-1)) return failRet;
+            else {
+                x[0] = mat.getElmt(rowNonZero-1, mat.getColLength()-1);
+                for(int i=1;i<rowNonZero;i++){
+                    x[i] = mat.getElmt(rowNonZero-1-i, mat.getColLength()-1);
+                    for(int j=0;j<i;j++){
+                        x[i] -= mat.getElmt(rowNonZero-1-i, mat.getColLength()-2-j)*x[j];
+                    }
+                }
+                for(int i=0;i<rowNonZero;i++){
+                    y[i] = x[rowNonZero-i-1];
+                }
+                return y;
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+        Matrix m = new Matrix();
+        m.readMat();
+        m=m.gaussEliminasi();
+        m.printMat();
     }
 
 }

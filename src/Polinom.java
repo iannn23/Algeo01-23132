@@ -53,61 +53,81 @@ public class Polinom {
         return x;
     }
 
-    // persamaan linear
-    public static Matrix createLinearEq(Matrix point) {
-        Matrix linearEq = new Matrix(point.getRowLength(), point.getRowLength()+1);
-        for (int i=0; i<=linearEq.getRowLength()-1; i++) {
-            for (int j=0; j<=linearEq.getColLength()-1; j++) {
-                if (j==linearEq.getColLength()-1) {
-                    linearEq.setElmt(i, j, Math.pow(point.getElmt(i, 0), j));
+    public static double minX(Matrix mat) {
+        double xMin = mat.getElmt(0, 1);
+        for (int i=0;i<=mat.getRowLength()-1; i++) {
+            if (mat.getElmt(i, 1)<xMin) xMin = mat.getElmt(i, 1);
+        }
+        return xMin;
+    }
+    public static double maxX(Matrix mat) {
+        double xMax = mat.getElmt(0, 1);
+        for (int i=0;i<=mat.getRowLength()-1; i++) {
+            if (mat.getElmt(i, 1)>xMax) xMax = mat.getElmt(i, 1);
+        }
+        return xMax;
+    }
+
+    public static boolean allPointsDifferent(Matrix mat) {
+        for (int i=0; i<mat.getRowLength()-1; i++) {
+            for (int j=i+1; j<=mat.getRowLength()-1; j++) {
+                if ((mat.getElmt(i, 0)==mat.getElmt(j, 0)) && (mat.getElmt(i, 1)==mat.getElmt(j, 1))) {
+                    return false;
                 }
             }
         }
-        return linearEq;
+        return true;
     }
 
-    //mendapat polinomial (belum persamaan)
-    public static Matrix getPolynomial(Matrix mLinEq) {
-        Matrix solTemp = mLinEq.gaussJordanEliminasi();
-        Matrix sol = new Matrix(solTemp.getRowLength(),1);
-        for (int i=0; i<sol.getRowLength(); i++) {
-            sol.setElmt(i, 0, solTemp.getElmt(i, solTemp.getRowLength()-1));
-        }
-        return sol;
-    }
-
-    //mendapat polinomial (bentuk persamaan)
-    public static String getPolynomialEq(Matrix sol) {
-        String polynomial = "f(x) = ";
-        for (int i=0; i<=sol.getRowLength()-1; i++) {
-            polynomial += String.valueOf(sol.getElmt(i, sol.getColLength()-1));
-            if (i==1) polynomial += "x";
-            else if (i>1) polynomial += "x^" + String.valueOf(i);
-            if (i!=sol.getRowLength()-1) polynomial += " + ";
-        }
-        return polynomial;
-    }
-
-    //menghitung taksiran (pakai matriks solusi)
-    public static double taksiran(Matrix sol, double x) {
+    public static void polynomialInterpolation() {
         double taksiran = 0;
-        for (int i=0; i<sol.getRowLength(); i++ ) {
-            for (int j=0; j<sol.getColLength(); j++) {
-                taksiran += sol.getElmt(i, j)*Math.pow(x,i);
+        int choice;
+        System.out.println("Apakah ingin ketik manual atau baca dari file?");
+        System.out.println("1. Ketik manual");
+        System.out.println("2. Baca dari file");
+        Scanner sc = new Scanner(System.in);
+        choice = sc.nextInt(); sc.nextLine();
+        if (choice==1) {
+            //ketik file
+        } else if (choice==2) {
+            Matrix matEmpty = new Matrix();
+            Matrix mat = Matrix.readFile(matEmpty);
+            double x = readXFile(mat);
+            //matPoint.printMat();
+            Matrix interpolation = new Matrix(0, 0);
+            interpolation = new Matrix(mat.getRowLength()-1, mat.getRowLength());
+            for (int i=0; i<mat.getRowLength()-1; i++) {
+                double xi = mat.getElmt(i, 0);
+                for (int j=0; j<=interpolation.getRowLength()-1; j++) {
+                    interpolation.setElmt(i, j, Math.pow(xi,j));
+                }
+                interpolation.setElmt(i, interpolation.getColLength()-1, mat.getElmt(i, 1));
             }
+
+            taksiran = mat.getElmt(mat.getRowLength()-1, 0);
+            if ((taksiran<minX(interpolation)) || (taksiran>maxX(interpolation))) {
+                System.out.println("Nilai x harus berada di antara x0 - xn.");
+                sc.close(); return;
+            }
+            if (!allPointsDifferent(mat)) {
+                System.out.println("Setiap titik harus unik."); sc.close(); return;
+            }
+
+            double result = 0.0;
+            double[] a = Matrix.gaussNoText(interpolation);
+            String equation = "f(x) = ";
+            for (int i=a.length-1; i>0; i--) {
+                equation += "("+Double.toString(a[i])+")"+"x^"+Integer.toString(i)+" + ";
+                result += a[i] * Math.pow(taksiran, i);
+            }
+            result += x;
+            equation += Double.toString(x)+", f("+Double.toString(taksiran)+") = "+Double.toString(result);
+            System.out.println(equation);
         }
-        return taksiran;
+        sc.close();
     }
 
-    // CONTOH:
     // public static void main(String[] args) {
-    //     Matrix mat2 = new Matrix();
-    //     Matrix matPointAndX = readFile(mat2);
-
-    //     Matrix matPoint = readPointFile(matPointAndX);
-    //     matPoint.printMat();
-
-    //     double x = readXFile(matPointAndX);
-    //     System.out.println("x = "+x);
+    //     polynomialInterpolation();
     // }
 }
