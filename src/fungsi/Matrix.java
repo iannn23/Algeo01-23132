@@ -1,4 +1,8 @@
-import java.time.format.TextStyle;
+package fungsi;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.Scanner;
 
 public class Matrix {
@@ -11,6 +15,10 @@ public class Matrix {
         nCol = column;
         mat = new double[nRow][nCol];
     }
+    //jika jumlah baris dan kolom bervariasi
+    public Matrix() {
+        this(0,0);
+    }
 
     // Memasukkan nilai ke matriks secara manual (dari input)
     public void readMat() {
@@ -22,6 +30,66 @@ public class Matrix {
         }
         sc.nextLine();
         sc.close();
+    }
+    // Memasukkan nilai ke matriks dari file
+    public void readMatFile(String fileName) {
+        try (BufferedReader br = new BufferedReader(new FileReader("..\\..\\test\\"+fileName+".txt"))) {
+            String line;
+            int colCount = 0;
+            int rowCount = 0;
+
+            while ((line=br.readLine()) != null) {
+                String[] values = line.trim().split("\\s+");
+                colCount = Math.max(colCount, values.length);
+                rowCount++;
+            }
+
+            nRow = rowCount;
+            nCol = colCount;
+            mat = new double[nRow][nCol];
+
+            try (BufferedReader lines = new BufferedReader(new FileReader("..\\..\\test\\"+fileName+".txt"))) {
+                int currRow = 0;
+                while ((line=lines.readLine()) != null) {
+                    String[] values = line.trim().split("\\s+");
+                    for (int j=0; j<values.length; j++) {
+                        mat[currRow][j] = Double.parseDouble(values[j]);
+                    }
+                    currRow++;
+                }
+            } catch (IOException e) {
+                System.out.println("Terdapat error saat membuka file: "+e.getMessage());;
+            }
+        } catch (IOException e) {
+            System.out.println("Terdapat error saat membuka file: "+e.getMessage());;
+        }
+    }
+    public static Matrix readFile(Matrix mat) {
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Masukkan nama file teks: ");
+        String fileName = sc.nextLine();
+        mat.readMatFile(fileName);
+        sc.close();
+        return mat;
+    }
+
+    // Mendapat matriks A dari matriks augmented
+    public Matrix matrixA() {    
+        Matrix A = new Matrix(nRow, nCol - 1);
+        for (int i = 0; i < nRow; i++) {
+            for (int j = 0; j < nCol - 1; j++) { // Kecuali kolom terakhir
+                A.mat[i][j] = mat[i][j];
+            }
+        }
+        return A;
+    }
+    // Mendapat matriks b dari matriks augmented
+    public Matrix matrixb() {
+        Matrix b = new Matrix(nRow, 1);
+        for (int i = 0; i < nRow; i++) {
+            b.mat[i][0] = mat[i][nCol - 1];
+        }
+        return b;
     }
 
     // Setter dan Getter
@@ -106,6 +174,24 @@ public class Matrix {
         mat[row2] = temp;
         swapCount++;
     }
+    public static Matrix konkatMatrix(Matrix m1, Matrix m2) {
+		Matrix mHasil = new Matrix(m1.getRowLength(),m1.getColLength()+m2.getColLength());
+		int i,j;
+		for(i = 0; i<m1.getRowLength();i++) {
+			for(j=0; j<m1.getColLength();j++) {
+				mHasil.setElmt(i, j, m1.getElmt(i, j));
+			}
+		}
+		
+		for(i = 0; i<m1.getRowLength();i++) {
+			int currCol = 0;
+			for(j= m1.getColLength(); j<mHasil.getColLength();j++) {
+				mHasil.setElmt(i, j, m2.getElmt(i, currCol));
+				currCol += 1;
+			}
+		}
+		return mHasil;
+	}
 
     // Penyederhanaan/Pembagian 1 baris dengan bilangan
     public void divRowByNum(int row, double div) {
@@ -148,7 +234,7 @@ public class Matrix {
     }
 
     // Menangani banyak solusi
-    public void solveManySolution() {
+    public void banyakSolusi() {
         int nEff = this.getColLength() - 1;
         boolean[] visited = new boolean[nEff];
         char[] parametric = new char[nEff];
@@ -250,25 +336,26 @@ public class Matrix {
 
     // Determinan Matriks (ekspansi kofaktor)
     public double determinantCof() {
-        if (nRow == nCol) {
-            if (nRow == 1) return retrieveELMT(0, 0);
+        if (this.nRow == this.nCol) {
+            if (this.nRow == 1) return this.retrieveELMT(0, 0);
 
             double det = 0.0;
             int plusMinus = 1;
             for (int j = 0; j < nCol; j++) {
-                if (retrieveELMT(0, j) != 0) {
+                if (this.retrieveELMT(0, j) != 0) {
                     Matrix subMat = new Matrix(nRow - 1, nCol - 1);
-                    int iSub = 0;
-                    for (int i = 1; i < nRow; i++) {
-                        int jSub = 0;
-                        for (int k = 0; k < nCol; k++) {
-                            if (k != j) {
-                                subMat.inputELMT(iSub, jSub, retrieveELMT(i, k));
-                                jSub++;
-                            }
-                        }
-                        iSub++;
-                    }
+                    this.getCofactor(subMat, 0, j, nRow);
+                    // int iSub = 0;
+                    // for (int i = 1; i < nRow; i++) {
+                    //     int jSub = 0;
+                    //     for (int k = 0; k < nCol; k++) {
+                    //         if (k != j) {
+                    //             subMat.inputELMT(iSub, jSub, retrieveELMT(i, k));
+                    //             jSub++;
+                    //         }
+                    //     }
+                    //     iSub++;
+                    // }
                     det += plusMinus * retrieveELMT(0, j) * subMat.determinantCof(); // Rekursif
                 }
                 plusMinus *= -1;
@@ -278,20 +365,10 @@ public class Matrix {
         return 0; // Matriks tidak persegi
     }
 
-    // Aturan Cramer
+    // Aturan Cramer (NOTE: PAKAI MATRIKS AUGMENTED, jangan matriks A langsung)
     public Matrix cramer() {
-        // Copy matriks A (kecuali kolom terakhir)
-        Matrix A = new Matrix(nRow, nCol - 1);
-        for (int i = 0; i < nRow; i++) {
-            for (int j = 0; j < nCol - 1; j++) { // Kecuali kolom terakhir
-                A.mat[i][j] = mat[i][j];
-            }
-        }
-        // Mendapat matriks b
-        Matrix b = new Matrix(nRow, 1);
-        for (int i = 0; i < nRow; i++) {
-            b.mat[i][0] = mat[i][nCol - 1];
-        }
+        Matrix A = this.matrixA();
+        Matrix b = this.matrixb();
 
         Matrix detXi = new Matrix(nRow, 1);
         double detA = A.determinantCof();
@@ -308,7 +385,7 @@ public class Matrix {
     }
 
     // Eliminasi Gauss
-    public Matrix gaussElimination() {
+    public Matrix gaussEliminasi() {
         int n = this.getRowLength();
         int m = this.getColLength();
         double[] X = new double[n];
@@ -413,11 +490,9 @@ public class Matrix {
 
         // Menentukan solusi
         if (n > m - 1) {
-            this.solveManySolution();
+            this.banyakSolusi();
         } else {
             backSubstitution(X);
-            // Anda mungkin ingin menambahkan kode untuk menampilkan atau mengembalikan solusi X
-            // Misalnya:
             System.out.println("Solusi:");
             for (int i = 0; i < X.length; i++) {
                 System.out.printf("X%d = %.4f%n", i + 1, X[i]);
@@ -427,25 +502,25 @@ public class Matrix {
     }
 
     // Eliminasi Gauss-Jordan
-    public Matrix gaussJordanElimination() {
+    public Matrix gaussJordanEliminasi() {
         int n = this.getRowLength();
         int m = this.getColLength();
 
         for (int i = 0; i < n; i++) {
             // Cari pivot non-nol pertama dalam kolom
-            int pivotRow = i;
-            while (pivotRow < n && this.getElmt(pivotRow, i) == 0) {
-                pivotRow++;
+            int pivot_baris = i;
+            while (pivot_baris < n && this.getElmt(pivot_baris, i) == 0) {
+                pivot_baris++;
             }
 
             // Pivot ketemu
-            if (pivotRow == n) {
+            if (pivot_baris == n) {
                 continue;
             }
 
             // Tukar baris pivot dengan baris saat ini
-            if (pivotRow != i) {
-                this.rowSwap(i, pivotRow);
+            if (pivot_baris != i) {
+                this.rowSwap(i, pivot_baris);
             }
 
             // Buat pivot menjadi 1
@@ -469,14 +544,14 @@ public class Matrix {
 
         // Memindahkan baris dengan semua elemen nol ke bawah
         for (int i = 0; i < n; i++) {
-            boolean allZero = true;
+            boolean kosong = true;
             for (int j = 0; j < m - 1; j++) {
                 if (this.getElmt(i, j) != 0) {
-                    allZero = false;
+                    kosong = false;
                     break;
                 }
             }
-            if (allZero) {
+            if (kosong) {
                 for (int k = i; k < n - 1; k++) {
                     this.rowSwap(k, k + 1);
                 }
@@ -485,18 +560,18 @@ public class Matrix {
 
         // Normalisasi baris pivot jika diperlukan
         for (int i = 0; i < n; i++) {
-            int pivotCol = 0;
-            while (pivotCol < m - 1 && this.getElmt(i, pivotCol) == 0) {
-                pivotCol++;
+            int pivot_kolom = 0;
+            while (pivot_kolom < m - 1 && this.getElmt(i, pivot_kolom) == 0) {
+                pivot_kolom++;
             }
 
-            if (pivotCol == m - 1) {
+            if (pivot_kolom == m - 1) {
                 continue;
             }
 
-            double pivotVal = this.getElmt(i, pivotCol);
+            double pivotVal = this.getElmt(i, pivot_kolom);
             if (pivotVal != 1 && pivotVal != 0) {
-                for (int k = pivotCol; k < m; k++) {
+                for (int k = pivot_kolom; k < m; k++) {
                     this.setElmt(i, k, this.getElmt(i, k) / pivotVal);
                 }
             }
@@ -504,6 +579,119 @@ public class Matrix {
         return this;
     }
 
-}
+    public void getCofactor (Matrix temp, int p, int q, int n){
+        int i = 0, j = 0;
+        for (int row = 0; row < n; row++) {
+            for (int col = 0; col < n; col++) {
+                if (row != p && col != q) {
+                    temp.setElmt(i, j++, getElmt(row, col));
+                    if (j == n - 1) {
+                        j = 0;
+                        i++;
+                    }
+                }
+            }
+        }
 
-    
+
+    }
+    public Matrix cofMatrix(){
+        Matrix cofactor = new Matrix(nRow, nCol);
+        Matrix temp = new Matrix(nRow-1, nCol-1);
+        for (int i=0; i<nRow; i++){
+            for (int j=0; j<nCol; j++){
+               this.getCofactor(temp, i, j, nRow);
+               double cofactorVal = Math.pow(-1, i+j) * temp.determinantCof();
+               cofactor.setElmt(i, j, cofactorVal);
+            }
+        }
+        return cofactor;
+    }
+
+    public Matrix inversOBE (){
+        Matrix mat_inv = new Matrix(this.getRowLength(), this.getColLength()*2);
+        int i;
+        int j;
+        int k;
+		// mengisi matriks dengan matriks identitas dan matriks input
+		for (i = 0; i < this.getRowLength(); i++){
+			for (j = 0; j < this.getColLength(); j++){
+				if (i == j)
+                {
+					mat_inv.setElmt(i, j+this.getColLength(), 1);
+				}
+				else
+                {
+					mat_inv.setElmt(i, j+this.getColLength(), 0);
+				}
+				mat_inv.setElmt(i, j, this.getElmt(i,j));
+			}
+		}
+		// mengeloop sehingga mendapatkan invers
+		for (i = 0; i < mat_inv.getRowLength(); i++){
+			for (j = 0; j < mat_inv.getRowLength(); j++){
+				if (i != j){
+					k = (i + 1);
+					if (mat_inv.getElmt(i,i) == 0){
+						while (k < mat_inv.getRowLength()){
+							if (mat_inv.getElmt(k,i) != 0){
+								// menukar baris
+								mat_inv.rowSwap(i, k);
+							}
+							k++;
+						}
+					}
+
+					double sub = -1 * mat_inv.getElmt(j, i) / mat_inv.getElmt(i, i);
+					for (k = i; k < mat_inv.getColLength(); k++){
+						mat_inv.setElmt(j, k, (mat_inv.getElmt(j,k)+sub*mat_inv.getElmt(i,k)));
+					}
+				}
+			}
+		}
+
+		for (i = 0; i < mat_inv.getRowLength(); i++){
+			double buatbagi = mat_inv.getElmt(i,i);
+			for (j = 0; j < mat_inv.getColLength(); j++){
+				if (mat_inv.getElmt(i,j) != 0){
+					mat_inv.setElmt(i, j, mat_inv.getElmt(i,j) / buatbagi);
+				}
+			}
+		}
+
+		for (i = 0; i < this.getRowLength(); i++){
+			for (j = 0; j < this.getColLength(); j++){
+				this.setElmt(i, j, (mat_inv.getElmt(i, j+this.getColLength())));
+			}
+		}
+		return this;
+	}
+    public Matrix adjugate(){
+        Matrix cofactor = cofMatrix();
+        Matrix adjugate = new Matrix(nRow, nCol);
+        for (int i=0; i<nRow; i++){
+            for (int j=0; j<nCol; j++){
+                adjugate.setElmt(i, j, cofactor.getElmt(j, i));
+            }
+        }
+        return adjugate;
+    }
+    public Matrix inversadj(){
+        //kalau determinannya == 0  error
+        double det = determinantCof();
+        if  (det == 0){
+            System.out.println("Determinan = 0 ");
+            return null;
+        }
+        Matrix mat_inv = new Matrix(nRow, nCol);
+        Matrix adj = adjugate();
+
+        for (int i=0; i<nRow; i++){
+            for (int j=0; j<nCol; j++){
+                mat_inv.setElmt(i, j, adj.getElmt(i, j) / det);
+            }
+        }
+        return mat_inv;
+    }
+
+}
