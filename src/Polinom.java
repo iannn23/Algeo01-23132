@@ -37,11 +37,11 @@ public class Polinom {
         sc.close();
         return mat;
     }
-    //pisah titik pada file dari nilai x yang akan ditaksir
+    //pisah titik pada file dari baris terakhir (x, y) yang akan ditaksir
     public static Matrix readPointFile(Matrix matPointAndX) {
-        Matrix matPoint = new Matrix(matPointAndX.getRowLength()-1,2);
+        Matrix matPoint = new Matrix(matPointAndX.getRowLength()-1,matPointAndX.getColLength());
         for (int i=0; i<=matPointAndX.getRowLength()-2; i++) { //baris terakhir tidak termasuk
-            for (int j=0; j<=1; j++) {
+            for (int j=0; j<=matPointAndX.getColLength()-1; j++) {
                 matPoint.setElmt(i, j, matPointAndX.retrieveELMT(i, j));
             }
         }
@@ -68,7 +68,7 @@ public class Polinom {
 
     //mendapat polinomial (belum persamaan)
     public static Matrix getPolynomial(Matrix mLinEq) {
-        Matrix solTemp = mLinEq.gaussJordanElimination();
+        Matrix solTemp = mLinEq.gaussJordanEliminasi();
         Matrix sol = new Matrix(solTemp.getRowLength(),1);
         for (int i=0; i<sol.getRowLength(); i++) {
             sol.setElmt(i, 0, solTemp.getElmt(i, solTemp.getRowLength()-1));
