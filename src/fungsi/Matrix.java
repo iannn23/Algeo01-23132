@@ -33,7 +33,7 @@ public class Matrix {
     }
     // Memasukkan nilai ke matriks dari file
     public void readMatFile(String fileName) {
-        try (BufferedReader br = new BufferedReader(new FileReader("..\\..\\test\\"+fileName+".txt"))) {
+        try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
             String line;
             int colCount = 0;
             int rowCount = 0;
@@ -48,7 +48,7 @@ public class Matrix {
             nCol = colCount;
             mat = new double[nRow][nCol];
 
-            try (BufferedReader lines = new BufferedReader(new FileReader("..\\..\\test\\"+fileName+".txt"))) {
+            try (BufferedReader lines = new BufferedReader(new FileReader(fileName))) {
                 int currRow = 0;
                 while ((line=lines.readLine()) != null) {
                     String[] values = line.trim().split("\\s+");
@@ -65,13 +65,13 @@ public class Matrix {
         }
     }
 
-    public static Matrix readFile(Matrix mat) {
+    public Matrix readFile() {
         Scanner sc = new Scanner(System.in);
         System.out.print("Masukkan nama file teks: ");
         String fileName = sc.nextLine();
-        mat.readMatFile(fileName);
+        this.readMatFile(fileName);
         sc.close();
-        return mat;
+        return this;
     }
 
     // Mendapat matriks A dari matriks augmented
@@ -619,11 +619,11 @@ public class Matrix {
         return inverse;
     }
 
-    // Contoh:
-    // public static void main(String[] args) {
-    //     Matrix mat = new Matrix();
-    //     Matrix mat2 = readFile(mat);
-    //     Matrix mat3 = mat2.gaussElimination();
-    //     mat3.printMat();
-    // }
+
+    public static void main(String[] args) {
+        Matrix mat = new Matrix(3, 5);
+        mat.readMat();
+        Matrix mat3 = mat.gaussElimination();
+        mat3.printMat();
+    }
 }
