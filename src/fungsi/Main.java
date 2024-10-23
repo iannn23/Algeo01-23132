@@ -1,6 +1,5 @@
 package fungsi;
 
-import fungsi.Matrix;
 import java.util.Scanner;
 
 public class Main {
@@ -22,17 +21,83 @@ public class Main {
             System.out.println("8. Keluar");
             System.out.println("Masukkan pilihan anda : ");
             int pilihan = sc.nextInt();
+
+            while (pilihan < 1 || pilihan > 8) {
+                System.out.println("Pilihan yang anda masukkan tidak valid, silahkan input ulang :");
+                pilihan = sc.nextInt();
+            }
+            
             if (pilihan == 1) {
+                System.out.println("Loading....................");
+                System.out.println("1. Metode eliminasi Gauss");
+                System.out.println("2. Metode eliminasi Gauss-Jordan");
+                System.out.println("3. Metode matriks balikan");
+                System.out.println("4. Kaidah Cramer");
+                System.out.println("Masukkan pilihan anda : ");
+                int pilihan1 = sc.nextInt();
+                while (pilihan1 < 1 || pilihan1 > 4) {
+                    System.out.println("Pilihan yang anda masukkan tidak valid, silahkan input ulang");
+                    pilihan1 = sc.nextInt();
+                }
+                System.out.println("1. Input dari Keyboard");
+                System.out.println("2. Input dari File");
+                System.out.println("Masukkan pilihan anda : ");
+                int pilihan2 = sc.nextInt();
+                while (pilihan2 < 1 || pilihan2 > 2){
+                    System.out.println("Pilihan yang anda masukkan tidak valid, silahkan input ulang");
+                    pilihan2 = sc.nextInt();
+                }
+
+                
+                if (pilihan1 == 1){
+
+                }
+
+
 
             } else if (pilihan == 2) {
+                System.out.println("Loading....................");
+                System.out.println("1. Metode eliminasi Gauss");
+                System.out.println("2. Metode eliminasi Gauss-Jordan");
+                System.out.println("3. Metode matriks balikan");
+                System.out.println("4. Kaidah Cramer");
+                System.out.println("Masukkan pilihan anda : ");
+                int pilihan1 = sc.nextInt();
+                while (pilihan1 < 1 || pilihan1 > 4) {
+                    System.out.println("Pilihan yang anda masukkan tidak valid, silahkan input ulang");
+                    pilihan1 = sc.nextInt();
+                }
 
             } else if (pilihan == 3) {
+                System.out.println("Loading....................");
+                System.out.println("1. Metode eliminasi Gauss");
+                System.out.println("2. Metode eliminasi Gauss-Jordan");
+                System.out.println("3. Metode matriks balikan");
+                System.out.println("4. Kaidah Cramer");
+                System.out.println("Masukkan pilihan anda : ");
+                int pilihan1 = sc.nextInt();
+                while (pilihan1 < 1 || pilihan1 > 4) {
+                    System.out.println("Pilihan yang anda masukkan tidak valid, silahkan input ulang");
+                    pilihan1 = sc.nextInt();
+                }
 
             } else if (pilihan == 4) {
 
             } else if (pilihan == 5) {
 
             } else if (pilihan == 6) {
+                System.out.println("Loading....................");
+                System.out.println("1. Metode eliminasi Gauss");
+                System.out.println("2. Metode eliminasi Gauss-Jordan");
+                System.out.println("3. Metode matriks balikan");
+                System.out.println("4. Kaidah Cramer");
+                System.out.println("Masukkan pilihan anda : ");
+                int pilihan1 = sc.nextInt();
+                while (pilihan1 < 1 || pilihan1 > 4) {
+                    System.out.println("Pilihan yang anda masukkan tidak valid, silahkan input ulang");
+                    pilihan1 = sc.nextInt();
+                }
+
 
             } else if (pilihan == 7) {
 
