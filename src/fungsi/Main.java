@@ -132,18 +132,19 @@ public class Main {
                     System.out.println("Pilihan yang anda masukkan tidak valid, silahkan input ulang");
                     pilihan2 = sc.nextInt();
                 }
-                if (pilihan2 == 1){
-                    Matrix matriks = Matrix.readMatSPL();
-                    matriks.gaussJordanEliminasi();
-                    matriks.printMat();
+                
+                if (pilihan1 == 1){
+                    if (pilihan2 == 1){
 
-                }
-                else if (pilihan2 == 2){
-                    Matrix matriks = Matrix.readFile(); 
-                    matriks.gaussJordanEliminasi();
-                    matriks.printMat();
+                    }
+                    else if (pilihan1 == 2){
 
+                    }
+                else if (pilihan1 == 2){
+
+                }   
                 }
+                
 
             } else if (pilihan == 3) {
                 System.out.println("Loading....................");
@@ -170,23 +171,25 @@ public class Main {
                     System.out.println("Pilihan yang anda masukkan tidak valid, silahkan input ulang");
                     pilihan2 = sc.nextInt();
                 }
-                if (pilihan2 == 1){
-                    Matrix matriks = Matrix.readMatSPL();
-                    matriks.gaussJordanEliminasi();
-                    matriks.printMat();
+                if (pilihan1 == 1){
+                    if (pilihan2 == 1){
+
+                    }
+                    else if (pilihan2 == 2){
+
+                    }
+                else if (pilihan1 == 2){
 
                 }
-                else if (pilihan2 == 2){
-                    Matrix matriks = Matrix.readFile(); 
-                    matriks.gaussJordanEliminasi();
-                    matriks.printMat();
-
                 }
+
+                
 
             } else if (pilihan == 4) {
                 Polinom.polynomialInterpolation();
                 
             } else if (pilihan == 5) {
+                
 
             } else if (pilihan == 6) {
                 System.out.println("Loading....................");
@@ -202,20 +205,17 @@ public class Main {
                     pilihan2 = sc.nextInt();
                 }
                 if (pilihan2 == 1){
-                    Matrix matriks = Matrix.readMatSPL();
-                    matriks.gaussJordanEliminasi();
-                    matriks.printMat();
+                   
 
                 }
                 else if (pilihan2 == 2){
-                    Matrix matriks = Matrix.readFile(); 
-                    matriks.gaussJordanEliminasi();
-                    matriks.printMat();
-
+                    
                 }
                 
 
             } else if (pilihan == 7) {
+                System.out.println("Loading....................");
+                System.out.println("Masih dalam tahap pengembangan");
 
             } else if (pilihan == 8) {
                 System.out.println("---------------------------------------------");
