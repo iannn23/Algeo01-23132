@@ -33,7 +33,7 @@ public class Matrix {
     }
     // Memasukkan nilai ke matriks dari file
     public void readMatFile(String fileName) {
-        try (BufferedReader br = new BufferedReader(new FileReader(fileName+".txt"))) {
+        try (BufferedReader br = new BufferedReader(new FileReader("..\\..\\test\\"+fileName+".txt"))) {
             String line;
             int colCount = 0;
             int rowCount = 0;
@@ -48,7 +48,7 @@ public class Matrix {
             nCol = colCount;
             mat = new double[nRow][nCol];
 
-            try (BufferedReader lines = new BufferedReader(new FileReader(fileName+".txt"))) {
+            try (BufferedReader lines = new BufferedReader(new FileReader("..\\..\\test\\"+fileName+".txt"))) {
                 int currRow = 0;
                 while ((line=lines.readLine()) != null) {
                     String[] values = line.trim().split("\\s+");
@@ -736,6 +736,46 @@ public class Matrix {
         }
         return mat_inv;
     }
+    
+    public static double[] gaussNoText(Matrix mat){
+        double[] failRet = {4, 20};
+        if(mat.getRowLength() < mat.getColLength()-1) return failRet;
+        else {
+            mat = mat.gaussEliminasi();
+            int rowNonZero = mat.getRowLength();
+            boolean rowZero; boolean rowAnomaly = false;
+
+            for(int i=0;i<=mat.getRowLength()-1;i++){
+                rowZero = true;
+                for(int j=0;j<=mat.getColLength()-1;j++){
+                    if((j == mat.getColLength()-1) && (mat.getElmt(i, j) != 0)) rowAnomaly = true;
+                    if(mat.getElmt(i, j) != 0) rowZero = false; break;
+                }
+                if(rowZero) rowNonZero--;
+                if(rowAnomaly) break;
+            }
+
+            double[] x,y;
+            x = new double[rowNonZero];
+            y = new double[rowNonZero];
+
+            if((rowAnomaly) || (rowNonZero<mat.getColLength()-1)) return failRet;
+            else {
+                x[0] = mat.getElmt(rowNonZero-1, mat.getColLength()-1);
+                for(int i=1;i<rowNonZero;i++){
+                    x[i] = mat.getElmt(rowNonZero-1-i, mat.getColLength()-1);
+                    for(int j=0;j<i;j++){
+                        x[i] -= mat.getElmt(rowNonZero-1-i, mat.getColLength()-2-j)*x[j];
+                    }
+                }
+                for(int i=0;i<rowNonZero;i++){
+                    y[i] = x[rowNonZero-i-1];
+                }
+                return y;
+            }
+        }
+    }
+
     public static void main(String[] args) {
         Matrix m = new Matrix();
         m.readMat();
