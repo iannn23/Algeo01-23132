@@ -187,7 +187,6 @@ public class Main {
                 Polinom.polynomialInterpolation();
                 
             } else if (pilihan == 5) {
-                Bicubic.bicubicInterpolation();
 
             } else if (pilihan == 6) {
                 System.out.println("Loading....................");
@@ -223,7 +222,7 @@ public class Main {
                 System.out.println("        Terima kasih telah menggunakan       ");
                 System.out.println("                Kalkulator JL                ");
                 System.out.println("---------------------------------------------");    
-                
+                state = false;
             } else {
                 state = false;
             }

@@ -824,4 +824,10 @@ public class Matrix {
             }
         }
     }
+    public static void main(String[] args) {
+        Matrix nigga = new Matrix(3,3);
+        nigga.readMat();
+        nigga.cramer();
+        nigga.printMat();
+    }
 }

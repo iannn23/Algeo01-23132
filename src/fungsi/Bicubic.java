@@ -1,4 +1,4 @@
-package fungsi;
+
 import java.util.Scanner;
 
 public class Bicubic {
