@@ -49,9 +49,9 @@ public class Matrix {
         int nRow, nCol;
         Scanner sc = new Scanner(System.in);
 
-        System.out.println("Masukkan jumlah baris: ");
+        System.out.print("Masukkan jumlah baris: ");
         nRow = sc.nextInt();
-        System.out.println("Masukkan jumlah kolom: ");
+        System.out.print("Masukkan jumlah kolom: ");
         nCol = sc.nextInt();
 
         Matrix matriksA = new Matrix(nRow, nCol);

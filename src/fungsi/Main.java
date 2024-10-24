@@ -88,7 +88,7 @@ public class Main {
                 else if (pilihan1 == 3){
                     if (pilihan2 == 1){
                         Matrix matriks = Matrix.readMatSPL();
-                        matriks.inversOBE();
+                        matriks.inverseGab();
                         matriks.printMat();
 
                     }
