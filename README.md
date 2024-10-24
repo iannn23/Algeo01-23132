@@ -37,3 +37,5 @@ Ini adalah program kalkulator matriks yang ditulis dalam bahasa Java. Fitur kalk
     ```
 3. Pilih salah satu fitur.
 4. Matriks dapat dibaca melalui keyboard maupun file .txt.
+
+Revisi dan pelengkapan akan segera dilakukan
