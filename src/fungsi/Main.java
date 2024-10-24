@@ -12,7 +12,13 @@ public class Main {
         while (state) {
             System.out.println("Loading....................");
             System.out.println("--------------------------------------------");
-            System.out.println("                    Menu                    ");
+            System.out.println("         __________  _____                  ");
+            System.out.println("        //\\\\___   \\\\//\\\\ \\\\                 ");
+            System.out.println("        \\\\//__//\\\\ \\\\  \\\\ \\\\                ");
+            System.out.println("              ___\\\\ \\\\  \\\\ \\\\               ");
+            System.out.println("             //\\\\ \\\\_\\\\  \\\\ \\\\_____         ");
+            System.out.println("             \\\\ \\\\____/\\\\ \\\\_______\\\\       ");
+            System.out.println("              \\\\//___// \\\\//_______//       ");
             System.out.println("--------------------------------------------");
             System.out.println("1. Sistem Persamaan Linier");
             System.out.println("2. Determinan");
