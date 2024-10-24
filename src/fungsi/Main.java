@@ -192,9 +192,15 @@ public class Main {
             } else if (pilihan == 7) {
 
             } else if (pilihan == 8) {
-                state = false;
+                System.out.println("---------------------------------------------");
+                System.out.println("        Terima kasih telah menggunakan       ");
+                System.out.println("                Kalkulator JL                ");
+                System.out.println("---------------------------------------------");
+                
+
+                
             } else {
-                System.out.println("Pilihan tidak valid");
+                state = false;
             }
             
         }

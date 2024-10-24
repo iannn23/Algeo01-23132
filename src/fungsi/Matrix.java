@@ -757,7 +757,7 @@ public class Matrix {
 		}
 		return this;
 	}
-    public Matrix adjugate(){
+    public Matrix adjoint(){
         Matrix cofactor = cofMatrix();
         Matrix adjugate = new Matrix(nRow, nCol);
         for (int i=0; i<nRow; i++){
@@ -775,7 +775,7 @@ public class Matrix {
             return null;
         }
         Matrix mat_inv = new Matrix(nRow, nCol);
-        Matrix adj = adjugate();
+        Matrix adj = adjoint();
 
         for (int i=0; i<nRow; i++){
             for (int j=0; j<nCol; j++){
@@ -823,12 +823,4 @@ public class Matrix {
             }
         }
     }
-
-    public static void main(String[] args) {
-        Matrix m = new Matrix();
-        m.readMat();
-        m=m.gaussEliminasi();
-        m.printMat();
-    }
-
 }
