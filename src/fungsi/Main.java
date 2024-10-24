@@ -48,6 +48,7 @@ public class Main {
                 }
                 if (pilihan1 == 1){
                     if (pilihan2 == 1){
+                        double [][] matriks = Matrix.readMatSPL();
 
                     }
                     else if (pilihan2 == 2){

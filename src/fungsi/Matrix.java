@@ -44,15 +44,16 @@ public class Matrix {
         sc.close();
     }
 
-    public double[][] readMatSPL() {
+    public static double[][] readMatSPL() {
         int i, j;
         double[][] matriksA, matriksB, m;
         int nRow, nCol;
+        Scanner sc = new Scanner(System.in);
 
         System.out.println("Masukkan jumlah baris: ");
-        inputCol();
+        nRow = sc.nextInt();
         System.out.println("Masukkan jumlah kolom: ");
-        inputRow();
+        nCol = sc.nextInt();
 
         matriksA = new double[nRow][nCol];
         System.out.println("Masukkan elemen matriks A: ");
@@ -70,6 +71,14 @@ public class Matrix {
             }
         }
 
+        m = new double[nRow][nCol+1];
+        for (i = 0; i < nRow; i++) {
+            for (j = 0; j < nCol; j++) {
+                m[i][j] = matriksA[i][j];
+            }
+            m[i][nCol] = matriksB[i][0];
+        }
+        return m;
     }
     // Memasukkan nilai ke matriks dari file
     public void readMatFile(String fileName) {
