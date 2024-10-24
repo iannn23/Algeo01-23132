@@ -20,6 +20,18 @@ public class Matrix {
         this(0,0);
     }
 
+    public void inputRow(){
+        System.out.println("Masukkan jumlah baris: ");
+        Scanner sc = new Scanner(System.in);
+        nRow = sc.nextInt();
+    }
+
+    public void inputCol(){
+        System.out.println("Masukkan jumlah kolom: ");
+        Scanner sc = new Scanner(System.in);
+        nCol = sc.nextInt();
+    }
+    
     // Memasukkan nilai ke matriks secara manual (dari input)
     public void readMat() {
         Scanner sc = new Scanner(System.in);
@@ -31,9 +43,55 @@ public class Matrix {
         sc.nextLine();
         sc.close();
     }
+
+    public static Matrix readMatSPL() {
+        int i, j;
+        int nRow, nCol;
+        Scanner sc = new Scanner(System.in);
+
+        System.out.print("Masukkan jumlah baris: ");
+        nRow = sc.nextInt();
+        System.out.print("Masukkan jumlah kolom: ");
+        nCol = sc.nextInt();
+
+        Matrix matriksA = new Matrix(nRow, nCol);
+        System.out.println("Masukkan elemen matriks A: ");
+        for (i = 0; i < nRow; i++) {
+            for (j = 0; j < nCol; j++) {
+                matriksA.mat[i][j] = sc.nextDouble();
+            }
+        }
+
+        Matrix matriksB = new Matrix(nRow, 1);
+        System.out.println("Masukkan elemen matriks B: ");
+        for (i = 0; i < nRow; i++) {
+            for (j = 0; j < 1; j++) {
+            matriksB.mat[i][0] = sc.nextDouble();
+            }
+        }
+
+        Matrix m = new Matrix (nRow, nCol+1);
+        for (i = 0; i < nRow; i++) {
+            for (j = 0; j < nCol; j++) {
+                m.mat[i][j] = matriksA.mat[i][j];
+            }
+            m.mat[i][nCol] = matriksB.mat[i][0];
+        }
+        return m;
+    }
+
+    public static Matrix readFile() {
+        Matrix mat = new Matrix();
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Masukkan nama file teks: ");
+        String fileName = sc.nextLine();
+        mat.readMatFile(fileName);
+        sc.close();
+        return mat;
+    } 
     // Memasukkan nilai ke matriks dari file
     public void readMatFile(String fileName) {
-        try (BufferedReader br = new BufferedReader(new FileReader("..\\..\\test\\"+fileName+".txt"))) {
+        try (BufferedReader br = new BufferedReader(new FileReader("..\\test\\"+fileName+".txt"))) {
             String line;
             int colCount = 0;
             int rowCount = 0;
@@ -48,7 +106,7 @@ public class Matrix {
             nCol = colCount;
             mat = new double[nRow][nCol];
 
-            try (BufferedReader lines = new BufferedReader(new FileReader("..\\..\\test\\"+fileName+".txt"))) {
+            try (BufferedReader lines = new BufferedReader(new FileReader("..\\test\\"+fileName+".txt"))) {
                 int currRow = 0;
                 while ((line=lines.readLine()) != null) {
                     String[] values = line.trim().split("\\s+");
@@ -58,39 +116,11 @@ public class Matrix {
                     currRow++;
                 }
             } catch (IOException e) {
-                System.out.println("Terdapat error saat membuka file: "+e.getMessage());;
+                System.out.println("Terdapat error saat membuka file: "+e.getMessage());
             }
         } catch (IOException e) {
-            System.out.println("Terdapat error saat membuka file: "+e.getMessage());;
+            System.out.println("Terdapat error saat membuka file: "+e.getMessage());
         }
-    }
-
-    public static Matrix readFile(Matrix mat) {
-        Scanner sc = new Scanner(System.in);
-        System.out.print("Masukkan nama file teks: ");
-        String fileName = sc.nextLine();
-        mat.readMatFile(fileName);
-        sc.close();
-        return mat;
-    }
-
-    // Mendapat matriks A dari matriks augmented
-    public Matrix matrixA() {    
-        Matrix A = new Matrix(nRow, nCol - 1);
-        for (int i = 0; i < nRow; i++) {
-            for (int j = 0; j < nCol - 1; j++) { // Kecuali kolom terakhir
-                A.mat[i][j] = mat[i][j];
-            }
-        }
-        return A;
-    }
-    // Mendapat matriks b dari matriks augmented
-    public Matrix matrixb() {
-        Matrix b = new Matrix(nRow, 1);
-        for (int i = 0; i < nRow; i++) {
-            b.mat[i][0] = mat[i][nCol - 1];
-        }
-        return b;
     }
 
     // Setter dan Getter
@@ -156,6 +186,24 @@ public class Matrix {
         }
     }
 
+    // Mendapat matriks A dari matriks augmented
+    public Matrix matrixA() {    
+        Matrix A = new Matrix(nRow, nCol - 1);
+        for (int i = 0; i < nRow; i++) {
+            for (int j = 0; j < nCol - 1; j++) { // Kecuali kolom terakhir
+                A.mat[i][j] = mat[i][j];
+            }
+        }
+        return A;
+    }
+    // Mendapat matriks b dari matriks augmented
+    public Matrix matrixb() {
+        Matrix b = new Matrix(nRow, 1);
+        for (int i = 0; i < nRow; i++) {
+            b.mat[i][0] = mat[i][nCol - 1];
+        }
+        return b;
+    }
     // Transpose matriks
     public Matrix transpose() {
         Matrix mT = new Matrix(nCol, nRow);
@@ -342,10 +390,45 @@ public class Matrix {
                 }
             }
         }
+
     }
 
+    public int bentukSolusi() {
+        int i; 
+        int j;
+        int n; 
+        int m;
+        int x = 0;
+        int kolomaug;
+        boolean Baristidaknol = false;
+        
+        n = this.getRowLength();
+        m = this.getColLength();
+        kolomaug = m - 1;
+
+        for (i = 0; i < n; i++) {
+            boolean Barisnol= true;
+            for (j = 0; j < kolomaug; j++) {
+                if (this.getElmt(i, j) != 0) {
+                    Barisnol = false;
+                    break;
+                }
+            }
+            if (!Barisnol) {
+                x++;
+                Baristidaknol = true;
+            } else if (this.getElmt(i, kolomaug) != 0) {
+                return 0;
+            }
+        }
+        if (!Baristidaknol || x < kolomaug) {
+            return 2;
+        } else {
+            return 1;
+        }
+    }
     // Substitusi mundur
-    public void backSubstitution(double[] X) {
+    public void bentuksegitiga(double[] X) {
         int i, j;
         int n = this.getRowLength();
         int m = this.getColLength();
@@ -533,14 +616,10 @@ public class Matrix {
         }
 
         // Menentukan solusi
-        if (n > m - 1) {
+        if (n > m ) {
             this.banyakSolusi();
         } else {
-            backSubstitution(X);
-            System.out.println("Solusi:");
-            for (int i = 0; i < X.length; i++) {
-                System.out.printf("X%d = %.4f%n", i + 1, X[i]);
-            }
+            bentuksegitiga(X);
         }
         return this;
     }
@@ -553,6 +632,7 @@ public class Matrix {
             // Cari pivot non-nol pertama dalam kolom
             int pivot_baris = i;
             while (pivot_baris < n && this.getElmt(pivot_baris, i) == 0) {
+                System.out.println(pivot_baris);
                 pivot_baris++;
             }
 
@@ -709,7 +789,7 @@ public class Matrix {
 		}
 		return this;
 	}
-    public Matrix adjugate(){
+    public Matrix adjoint(){
         Matrix cofactor = cofMatrix();
         Matrix adjugate = new Matrix(nRow, nCol);
         for (int i=0; i<nRow; i++){
@@ -727,7 +807,7 @@ public class Matrix {
             return null;
         }
         Matrix mat_inv = new Matrix(nRow, nCol);
-        Matrix adj = adjugate();
+        Matrix adj = adjoint();
 
         for (int i=0; i<nRow; i++){
             for (int j=0; j<nCol; j++){
@@ -775,12 +855,46 @@ public class Matrix {
             }
         }
     }
+    // public static void main(String[] args) {
+    //     Matrix M = new Matrix(4,6);
+    //     M.readMat();
+    //     M.gaussEliminasi();
+    //     double X[] = new double[M.getRowLength()];
+    //     int SolutionType = M.bentukSolusi();
+    //     if (SolutionType==0){
+    //         System.out.println("Solusi tidak ada.");
+    //         M.printMat();
+    //     } else if (SolutionType==1){
+    //         System.out.println("Solusi tunggal:");
+    //         for (int i = 0; i < M.getRowLength(); i++) {
+    //             System.out.printf("X[%d] = %.4f%n", i + 1, X[i]);
+    //         }
+    //         M.printMat();
+    //     }else {
+    //         System.out.println("Solusi banyak (parametrik):");
+    //         M.banyakSolusi();
+    //         M.printMat();
 
-    public static void main(String[] args) {
-        Matrix m = new Matrix();
-        m.readMat();
-        m=m.gaussEliminasi();
-        m.printMat();
-    }
+    //     }
+    // }
+
+    // public static void main(String[] args) {
+    //     Matrix M = new Matrix(6,5);
+    //     M.readMat();
+    //     M.gaussJordanEliminasi();
+    //     int SolutionType = M.bentukSolusi();
+    //     if (SolutionType==0){
+    //         System.out.println("Solusi tidak ada.");
+    //         M.printMat();
+    //     } else if (SolutionType==1){
+    //         System.out.println("Solusi tunggal:");
+    //         for (int i = 0; i < M.getRowLength(); i++) {
+    //             System.out.printf("X[%d] = %.4f%n", i + 1, M.mat[i][M.getColLength() - 1]);
+    //         }
+    //         M.printMat();
+    //     }else {
+    //         System.out.println("Solusi banyak (parametrik):");
+    //         M.banyakSolusi();
+    //         M.printMat();
 
 }
