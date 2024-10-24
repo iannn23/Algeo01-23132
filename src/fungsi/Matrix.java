@@ -44,9 +44,8 @@ public class Matrix {
         sc.close();
     }
 
-    public static double[][] readMatSPL() {
+    public static Matrix readMatSPL() {
         int i, j;
-        double[][] matriksA, matriksB, m;
         int nRow, nCol;
         Scanner sc = new Scanner(System.in);
 
@@ -55,31 +54,41 @@ public class Matrix {
         System.out.println("Masukkan jumlah kolom: ");
         nCol = sc.nextInt();
 
-        matriksA = new double[nRow][nCol];
+        Matrix matriksA = new Matrix(nRow, nCol);
         System.out.println("Masukkan elemen matriks A: ");
         for (i = 0; i < nRow; i++) {
             for (j = 0; j < nCol; j++) {
-                matriksA[i][j] = sc.nextDouble();
+                matriksA.mat[i][j] = sc.nextDouble();
             }
         }
 
-        matriksB = new double[nRow][1];
+        Matrix matriksB = new Matrix(nRow, 1);
         System.out.println("Masukkan elemen matriks B: ");
         for (i = 0; i < nRow; i++) {
             for (j = 0; j < 1; j++) {
-            matriksB[i][0] = sc.nextDouble();
+            matriksB.mat[i][0] = sc.nextDouble();
             }
         }
 
-        m = new double[nRow][nCol+1];
+        Matrix m = new Matrix (nRow, nCol+1);
         for (i = 0; i < nRow; i++) {
             for (j = 0; j < nCol; j++) {
-                m[i][j] = matriksA[i][j];
+                m.mat[i][j] = matriksA.mat[i][j];
             }
-            m[i][nCol] = matriksB[i][0];
+            m.mat[i][nCol] = matriksB.mat[i][0];
         }
         return m;
     }
+
+    public static Matrix readFile() {
+        Matrix mat = new Matrix();
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Masukkan nama file teks: ");
+        String fileName = sc.nextLine();
+        mat.readMatFile(fileName);
+        sc.close();
+        return mat;
+    } 
     // Memasukkan nilai ke matriks dari file
     public void readMatFile(String fileName) {
         try (BufferedReader br = new BufferedReader(new FileReader("..\\test\\"+fileName+".txt"))) {
@@ -107,22 +116,12 @@ public class Matrix {
                     currRow++;
                 }
             } catch (IOException e) {
-                System.out.println("Terdapat error saat membuka file: "+e.getMessage());;
+                System.out.println("Terdapat error saat membuka file: "+e.getMessage());
             }
         } catch (IOException e) {
-            System.out.println("Terdapat error saat membuka file: "+e.getMessage());;
+            System.out.println("Terdapat error saat membuka file: "+e.getMessage());
         }
     }
-
-    public static Matrix readFile(Matrix mat) {
-        Scanner sc = new Scanner(System.in);
-        System.out.print("Masukkan nama file teks: ");
-        String fileName = sc.nextLine();
-        mat.readMatFile(fileName);
-        sc.close();
-        return mat;
-    }
-
 
     // Setter dan Getter
     public void setElmt(int i, int j, double elmt) {
@@ -187,6 +186,24 @@ public class Matrix {
         }
     }
 
+    // Mendapat matriks A dari matriks augmented
+    public Matrix matrixA() {    
+        Matrix A = new Matrix(nRow, nCol - 1);
+        for (int i = 0; i < nRow; i++) {
+            for (int j = 0; j < nCol - 1; j++) { // Kecuali kolom terakhir
+                A.mat[i][j] = mat[i][j];
+            }
+        }
+        return A;
+    }
+    // Mendapat matriks b dari matriks augmented
+    public Matrix matrixb() {
+        Matrix b = new Matrix(nRow, 1);
+        for (int i = 0; i < nRow; i++) {
+            b.mat[i][0] = mat[i][nCol - 1];
+        }
+        return b;
+    }
     // Transpose matriks
     public Matrix transpose() {
         Matrix mT = new Matrix(nCol, nRow);

@@ -1,5 +1,6 @@
 package fungsi;
 
+
 import java.util.Scanner;
 
 public class Main {
@@ -9,8 +10,10 @@ public class Main {
         boolean state = true;
 
         while (state) {
-            System.out.println("Loading....................\n");
-            System.out.println("Menu");
+            System.out.println("Loading....................");
+            System.out.println("--------------------------------------------");
+            System.out.println("                    Menu                    ");
+            System.out.println("--------------------------------------------");
             System.out.println("1. Sistem Persamaan Linier");
             System.out.println("2. Determinan");
             System.out.println("3. Matrik balikan");
@@ -28,6 +31,9 @@ public class Main {
             }
             if (pilihan == 1) {
                 System.out.println("Loading....................");
+                System.out.println("--------------------------------------------");
+                System.out.println("                   Metode                   ");
+                System.out.println("--------------------------------------------");
                 System.out.println("1. Metode eliminasi Gauss");
                 System.out.println("2. Metode eliminasi Gauss-Jordan");
                 System.out.println("3. Metode matriks balikan");
@@ -38,6 +44,10 @@ public class Main {
                     System.out.println("Pilihan yang anda masukkan tidak valid, silahkan input ulang");
                     pilihan1 = sc.nextInt();
                 }
+                System.out.println("Loading....................");
+                System.out.println("--------------------------------------------");
+                System.out.println("                Pilihan Input               ");
+                System.out.println("--------------------------------------------");
                 System.out.println("1. Input dari Keyboard");
                 System.out.println("2. Input dari File");
                 System.out.println("Masukkan pilihan anda : ");
@@ -48,15 +58,23 @@ public class Main {
                 }
                 if (pilihan1 == 1){
                     if (pilihan2 == 1){
-                        double [][] matriks = Matrix.readMatSPL();
-
+                        Matrix matriks = Matrix.readMatSPL();
+                        matriks.gaussEliminasi();
+                        matriks.printMat();
+                        
                     }
                     else if (pilihan2 == 2){
+                        Matrix matriks;
+                        Matrix.readFile();
+                        
 
                     }
                 }
                 else if (pilihan1 == 2){
                     if (pilihan2 == 1){
+                        Matrix matriks = Matrix.readMatSPL();
+                        matriks.gaussJordanEliminasi();
+                        matriks.printMat();
 
                     }
                     else if (pilihan2 == 2){
@@ -82,6 +100,9 @@ public class Main {
 
             } else if (pilihan == 2) {
                 System.out.println("Loading....................");
+                System.out.println("--------------------------------------------");
+                System.out.println("                   Metode                   ");
+                System.out.println("--------------------------------------------");
                 System.out.println("1. Metode kofaktor");
                 System.out.println("2. Metode OBE");
                 System.out.println("Masukkan pilihan anda : ");
@@ -90,6 +111,10 @@ public class Main {
                     System.out.println("Pilihan yang anda masukkan tidak valid, silahkan input ulang");
                     pilihan1 = sc.nextInt();
                 }
+                System.out.println("Loading....................");
+                System.out.println("--------------------------------------------");
+                System.out.println("                Pilihan Input               ");
+                System.out.println("--------------------------------------------");
                 System.out.println("1. Input dari Keyboard");
                 System.out.println("2. Input dari File");
                 System.out.println("Masukkan pilihan anda : ");
@@ -101,6 +126,9 @@ public class Main {
 
             } else if (pilihan == 3) {
                 System.out.println("Loading....................");
+                System.out.println("--------------------------------------------");
+                System.out.println("                   Metode                   ");
+                System.out.println("--------------------------------------------");
                 System.out.println("1. Metode Adjoin");
                 System.out.println("2. Metode Matriks Identitas");
                 System.out.println("Masukkan pilihan anda : ");
@@ -109,6 +137,10 @@ public class Main {
                     System.out.println("Pilihan yang anda masukkan tidak valid, silahkan input ulang");
                     pilihan1 = sc.nextInt();
                 }
+                System.out.println("Loading....................");
+                System.out.println("--------------------------------------------");
+                System.out.println("                Pilihan Input               ");
+                System.out.println("--------------------------------------------");
                 System.out.println("1. Input dari Keyboard");
                 System.out.println("2. Input dari File");
                 System.out.println("Masukkan pilihan anda : ");
@@ -119,6 +151,10 @@ public class Main {
                 }
 
             } else if (pilihan == 4) {
+                System.out.println("Loading....................");
+                System.out.println("--------------------------------------------");
+                System.out.println("                Pilihan Input               ");
+                System.out.println("--------------------------------------------");
                 System.out.println("1. Input dari Keyboard");
                 System.out.println("2. Input dari File");
                 System.out.println("Masukkan pilihan anda : ");
@@ -129,8 +165,13 @@ public class Main {
                 }
                 
             } else if (pilihan == 5) {
+                Bicubic.bicubicInterpolation();
 
             } else if (pilihan == 6) {
+                System.out.println("Loading....................");
+                System.out.println("--------------------------------------------");
+                System.out.println("                Pilihan Input               ");
+                System.out.println("--------------------------------------------");
                 System.out.println("1. Input dari Keyboard");
                 System.out.println("2. Input dari File");
                 System.out.println("Masukkan pilihan anda : ");

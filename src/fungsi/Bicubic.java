@@ -1,4 +1,4 @@
-import fungsi.Matrix;
+package fungsi;
 import java.util.Scanner;
 
 public class Bicubic {
@@ -86,8 +86,7 @@ public class Bicubic {
     }
 
     public static void bicubicInterpolation() {
-        Matrix matEmpty = new Matrix();
-        Matrix mat = Matrix.readFile(matEmpty);
+        Matrix mat = Matrix.readFile();
         Matrix matPoint = readPointFile(mat);
         matPoint.printMat();
         double x = readXFile(mat); double y = readYFile(mat);
@@ -107,7 +106,4 @@ public class Bicubic {
         System.out.println("f("+Double.toString(x)+", "+Double.toString(y)+") = "+Double.toString(res));
     }
 
-    public static void main(String[] args) {
-        bicubicInterpolation();
-    }
 }
