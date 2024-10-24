@@ -64,8 +64,9 @@ public class Main {
                         
                     }
                     else if (pilihan2 == 2){
-                        Matrix matriks;
-                        Matrix.readFile();
+                        Matrix matriks = Matrix.readFile();
+                        matriks.gaussEliminasi();
+                        matriks.printMat();
                         
 
                     }
@@ -78,11 +79,17 @@ public class Main {
 
                     }
                     else if (pilihan2 == 2){
+                        Matrix matriks = Matrix.readFile(); 
+                        matriks.gaussJordanEliminasi();
+                        matriks.printMat();
 
                     }
                 }
                 else if (pilihan1 == 3){
                     if (pilihan2 == 1){
+                        Matrix matriks = Matrix.readMatSPL();
+                        matriks.inversOBE();
+                        matriks.printMat();
 
                     }
                     else if (pilihan2 == 2){
