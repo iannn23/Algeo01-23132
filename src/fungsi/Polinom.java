@@ -1,6 +1,6 @@
-import fungsi.Matrix;
+package fungsi;
 import java.util.Scanner;
-import java.lang.Math;
+
 
 public class Polinom {
     
@@ -93,13 +93,20 @@ public class Polinom {
 
     // fungsi utama
     public static void polynomialInterpolation() {
-        int choice;
-        System.out.println("Apakah ingin ketik manual atau baca dari file?");
-        System.out.println("1. Ketik manual");
-        System.out.println("2. Baca dari file");
         Scanner sc = new Scanner(System.in);
-        choice = sc.nextInt(); sc.nextLine();
-        if (choice==1) {
+        System.out.println("Loading....................");
+        System.out.println("--------------------------------------------");
+        System.out.println("                Pilihan Input               ");
+        System.out.println("--------------------------------------------");
+        System.out.println("1. Input dari Keyboard");
+        System.out.println("2. Input dari File");
+        System.out.println("Masukkan pilihan anda : ");
+        int pilihan2 = sc.nextInt();
+        while (pilihan2 < 1 || pilihan2 > 2){
+            System.out.println("Pilihan yang anda masukkan tidak valid, silahkan input ulang");
+            pilihan2 = sc.nextInt();
+        }
+        if (pilihan2 == 1) {
             int n = 0;
             System.out.print("Masukkan banyak titik: "); n = sc.nextInt(); sc.nextLine();
             Matrix mat = new Matrix(n+1,2);
@@ -133,9 +140,8 @@ public class Polinom {
             result += a[0];
             equation += Double.toString(a[0])+", f("+Double.toString(x)+") = "+Double.toString(result);
             System.out.println(equation);
-        } else if (choice==2) {
-            Matrix matEmpty = new Matrix();
-            Matrix mat = Matrix.readFile(matEmpty);
+        } else if (pilihan2==2) {
+            Matrix mat = Matrix.readFile();
             double x = readXFile(mat);
             //matPoint.printMat();
             Matrix interpolation = new Matrix(0, 0);
@@ -169,7 +175,6 @@ public class Polinom {
         } else System.out.println("Ketik '1' atau '2'.");
         sc.close();
     }
-
     public static void main(String[] args) {
         polynomialInterpolation();
     }

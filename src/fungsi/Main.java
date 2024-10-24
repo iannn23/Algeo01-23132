@@ -98,7 +98,9 @@ public class Main {
                 }
                 else if (pilihan1 == 4){
                     if (pilihan2 == 1){
-
+                        Matrix matriks = Matrix.readMatSPL();
+                        matriks.cramer();
+                        matriks.printMat();
                     }
                     else if (pilihan2 == 2){
 
@@ -130,6 +132,18 @@ public class Main {
                     System.out.println("Pilihan yang anda masukkan tidak valid, silahkan input ulang");
                     pilihan2 = sc.nextInt();
                 }
+                if (pilihan2 == 1){
+                    Matrix matriks = Matrix.readMatSPL();
+                    matriks.gaussJordanEliminasi();
+                    matriks.printMat();
+
+                }
+                else if (pilihan2 == 2){
+                    Matrix matriks = Matrix.readFile(); 
+                    matriks.gaussJordanEliminasi();
+                    matriks.printMat();
+
+                }
 
             } else if (pilihan == 3) {
                 System.out.println("Loading....................");
@@ -156,20 +170,21 @@ public class Main {
                     System.out.println("Pilihan yang anda masukkan tidak valid, silahkan input ulang");
                     pilihan2 = sc.nextInt();
                 }
+                if (pilihan2 == 1){
+                    Matrix matriks = Matrix.readMatSPL();
+                    matriks.gaussJordanEliminasi();
+                    matriks.printMat();
+
+                }
+                else if (pilihan2 == 2){
+                    Matrix matriks = Matrix.readFile(); 
+                    matriks.gaussJordanEliminasi();
+                    matriks.printMat();
+
+                }
 
             } else if (pilihan == 4) {
-                System.out.println("Loading....................");
-                System.out.println("--------------------------------------------");
-                System.out.println("                Pilihan Input               ");
-                System.out.println("--------------------------------------------");
-                System.out.println("1. Input dari Keyboard");
-                System.out.println("2. Input dari File");
-                System.out.println("Masukkan pilihan anda : ");
-                int pilihan2 = sc.nextInt();
-                while (pilihan2 < 1 || pilihan2 > 2){
-                    System.out.println("Pilihan yang anda masukkan tidak valid, silahkan input ulang");
-                    pilihan2 = sc.nextInt();
-                }
+                Polinom.polynomialInterpolation();
                 
             } else if (pilihan == 5) {
                 Bicubic.bicubicInterpolation();
@@ -187,6 +202,18 @@ public class Main {
                     System.out.println("Pilihan yang anda masukkan tidak valid, silahkan input ulang");
                     pilihan2 = sc.nextInt();
                 }
+                if (pilihan2 == 1){
+                    Matrix matriks = Matrix.readMatSPL();
+                    matriks.gaussJordanEliminasi();
+                    matriks.printMat();
+
+                }
+                else if (pilihan2 == 2){
+                    Matrix matriks = Matrix.readFile(); 
+                    matriks.gaussJordanEliminasi();
+                    matriks.printMat();
+
+                }
                 
 
             } else if (pilihan == 7) {
@@ -195,9 +222,7 @@ public class Main {
                 System.out.println("---------------------------------------------");
                 System.out.println("        Terima kasih telah menggunakan       ");
                 System.out.println("                Kalkulator JL                ");
-                System.out.println("---------------------------------------------");
-                
-
+                System.out.println("---------------------------------------------");    
                 
             } else {
                 state = false;

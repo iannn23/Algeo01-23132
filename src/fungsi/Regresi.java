@@ -1,4 +1,4 @@
-import fungsi.Matrix;
+package fungsi;
 import java.util.Scanner;
 
 public class Regresi {
