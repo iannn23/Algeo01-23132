@@ -1,6 +1,5 @@
 import fungsi.Matrix;
 import java.util.Scanner;
-import java.lang.Math;
 
 public class Bicubic {
     // Matriks X (bentuk y = Xa)
@@ -108,7 +107,7 @@ public class Bicubic {
         System.out.println("f("+Double.toString(x)+", "+Double.toString(y)+") = "+Double.toString(res));
     }
 
-    // public static void main(String[] args) {
-    //     bicubicInterpolation();
-    // }
+    public static void main(String[] args) {
+        bicubicInterpolation();
+    }
 }
