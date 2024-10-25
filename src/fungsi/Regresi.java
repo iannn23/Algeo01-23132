@@ -75,7 +75,7 @@ public class Regresi {
         // matNormalEst.printMat();
         
         Matrix hasil= new Matrix (matNormalEst.getColLength()-1, 1);
-        hasil=Matrix.inverseGab(matNormalEst);
+        hasil = matNormalEst.inverseGab();
         // System.out.print("MatNormalEst inv ");
         // hasil.printMat();
         

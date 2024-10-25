@@ -11,15 +11,15 @@ public class Main {
 
         while (state) {
             System.out.println("Loading....................");
-            System.out.println("--------------------------------------------");
-            System.out.println("         __________  _____                  ");
-            System.out.println("        //\\\\___   \\\\//\\\\ \\\\                 ");
+            System.out.println("---------------------------------------------");
+            System.out.println("         __________  _____                            ");
+            System.out.println("        //\\\\___   \\\\//\\\\ \\\\                   ");
             System.out.println("        \\\\//__//\\\\ \\\\  \\\\ \\\\                ");
-            System.out.println("              ___\\\\ \\\\  \\\\ \\\\               ");
+            System.out.println("              ___\\\\ \\\\  \\\\ \\\\                 ");
             System.out.println("             //\\\\ \\\\_\\\\  \\\\ \\\\_____         ");
             System.out.println("             \\\\ \\\\____/\\\\ \\\\_______\\\\       ");
-            System.out.println("              \\\\//___// \\\\//_______//       ");
-            System.out.println("--------------------------------------------");
+            System.out.println("              \\\\//___// \\\\//_______//             ");
+            System.out.println("---------------------------------------------");
             System.out.println("1. Sistem Persamaan Linier");
             System.out.println("2. Determinan");
             System.out.println("3. Matrik balikan");
@@ -66,7 +66,23 @@ public class Main {
                     if (pilihan2 == 1){
                         Matrix matriks = Matrix.readMatSPL();
                         matriks.gaussEliminasi();
-                        matriks.printMat();
+                        double X[] = new double[matriks.getRowLength()];
+                        int jenisSolusi = matriks.bentukSolusi();
+                        matriks.bentuksegitiga(X);
+                        if (jenisSolusi == 0){
+                            System.out.println("Solusi tidak ada.");
+                            matriks.printMat();
+                        } else if (jenisSolusi == 1){
+                            System.out.println("Solusi tunggal:");
+                            for (int i = 0; i < matriks.getRowLength(); i++) {
+                                System.out.printf("X%d = %.4f%n", i + 1, X[i]);
+                            }
+                            matriks.printMat();
+                         }else {
+                            System.out.println("Solusi banyak (parametrik):");
+                            matriks.banyakSolusi();
+                            matriks.printMat();
+                }
                         
                     }
                     else if (pilihan2 == 2){
@@ -195,13 +211,13 @@ public class Main {
                 Polinom.polynomialInterpolation();
                 
             } else if (pilihan == 5) {
+                Bicubic.bicubicInterpolation();
                 
-
             } else if (pilihan == 6) {
                 System.out.println("Loading....................");
-                System.out.println("--------------------------------------------");
+                System.out.println("---------------------------------------------");
                 System.out.println("                Pilihan Input               ");
-                System.out.println("--------------------------------------------");
+                System.out.println("---------------------------------------------");
                 System.out.println("1. Input dari Keyboard");
                 System.out.println("2. Input dari File");
                 System.out.println("Masukkan pilihan anda : ");
@@ -211,7 +227,8 @@ public class Main {
                     pilihan2 = sc.nextInt();
                 }
                 if (pilihan2 == 1){
-                   
+                   Matrix matriks = new Matrix();
+                   matriks.readMat();
 
                 }
                 else if (pilihan2 == 2){

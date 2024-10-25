@@ -1,3 +1,4 @@
+package fungsi;
 
 import java.util.Scanner;
 

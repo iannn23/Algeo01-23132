@@ -393,8 +393,42 @@ public class Matrix {
         }
     }
 
+    public int bentukSolusi() {
+        int i; 
+        int j;
+        int n; 
+        int m;
+        int x = 0;
+        int kolomaug;
+        boolean Baristidaknol = false;
+        
+        n = this.getRowLength();
+        m = this.getColLength();
+        kolomaug = m - 1;
+
+        for (i = 0; i < n; i++) {
+            boolean Barisnol= true;
+            for (j = 0; j < kolomaug; j++) {
+                if (this.getElmt(i, j) != 0) {
+                    Barisnol = false;
+                    break;
+                }
+            }
+            if (!Barisnol) {
+                x++;
+                Baristidaknol = true;
+            } else if (this.getElmt(i, kolomaug) != 0) {
+                return 0;
+            }
+        }
+        if (!Baristidaknol || x < kolomaug) {
+            return 2;
+        } else {
+            return 1;
+        }
+    }
     // Substitusi mundur
-    public void backSubstitution(double[] X) {
+    public void bentuksegitiga(double[] X) {
         int i, j;
         int n = this.getRowLength();
         int m = this.getColLength();
@@ -407,6 +441,7 @@ public class Matrix {
             X[i] /= this.getElmt(i, i);
         }
     }
+
 
     // Determinan Matriks (reduksi baris)
     public double determinantRed() {
@@ -438,17 +473,17 @@ public class Matrix {
                 if (this.retrieveELMT(0, j) != 0) {
                     Matrix subMat = new Matrix(nRow - 1, nCol - 1);
                     this.getCofactor(subMat, 0, j, nRow);
-                    // int iSub = 0;
-                    // for (int i = 1; i < nRow; i++) {
-                    //     int jSub = 0;
-                    //     for (int k = 0; k < nCol; k++) {
-                    //         if (k != j) {
-                    //             subMat.inputELMT(iSub, jSub, retrieveELMT(i, k));
-                    //             jSub++;
-                    //         }
-                    //     }
-                    //     iSub++;
-                    // }
+                    int iSub = 0;
+                    for (int i = 1; i < nRow; i++) {
+                        int jSub = 0;
+                        for (int k = 0; k < nCol; k++) {
+                            if (k != j) {
+                                subMat.inputELMT(iSub, jSub, retrieveELMT(i, k));
+                                jSub++;
+                            }
+                        }
+                        iSub++;
+                    }
                     det += plusMinus * retrieveELMT(0, j) * subMat.determinantCof(); // Rekursif
                 }
                 plusMinus *= -1;
@@ -582,14 +617,10 @@ public class Matrix {
         }
 
         // Menentukan solusi
-        if (n > m - 1) {
+        if (n > m ) {
             this.banyakSolusi();
         } else {
-            backSubstitution(X);
-            System.out.println("Solusi:");
-            for (int i = 0; i < X.length; i++) {
-                System.out.printf("X%d = %.4f%n", i + 1, X[i]);
-            }
+            bentuksegitiga(X);
         }
         return this;
     }
@@ -602,6 +633,7 @@ public class Matrix {
             // Cari pivot non-nol pertama dalam kolom
             int pivot_baris = i;
             while (pivot_baris < n && this.getElmt(pivot_baris, i) == 0) {
+                System.out.println(pivot_baris);
                 pivot_baris++;
             }
 
