@@ -43,16 +43,25 @@ public class Matrix {
         System.out.print("Masukkan jumlah kolom: ");
         nCol = sc.nextInt();
 
-        Matrix matriksA = new Matrix(nRow, nCol);
-        System.out.println("Masukkan elemen matriks A: ");
+        Matrix matriks = new Matrix(nRow, nCol);
+        System.out.println("Masukkan elemen matriks: ");
         for (i = 0; i < nRow; i++) {
             for (j = 0; j < nCol; j++) {
-                matriksA.mat[i][j] = sc.nextDouble();
+                matriks.mat[i][j] = sc.nextDouble();
             }
         }
-        return matriksA;
+        return matriks;
     }
-
+    public void readMat2() {
+        Scanner sc = new Scanner(System.in);
+        for (int i = 0; i < nRow; i++) {
+            for (int j = 0; j < nCol; j++) {
+                mat[i][j] = sc.nextDouble();
+            }
+        }
+        sc.nextLine();
+        sc.close();
+    }
     public static Matrix readMatSPL() {
         int i, j;
         int nRow, nCol;
@@ -866,4 +875,11 @@ public class Matrix {
         }
     }
 
+    public static void main(String[] args) {
+        Matrix m = new Matrix(3,3);
+        m.readMat2();
+        m.cramer();
+        m.printMat();
+
+    }
 }

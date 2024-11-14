@@ -88,7 +88,23 @@ public class Main {
                     else if (pilihan2 == 2){
                         Matrix matriks = Matrix.readFile();
                         matriks.gaussEliminasi();
-                        matriks.printMat();
+                        double X[] = new double[matriks.getRowLength()];
+                        int jenisSolusi = matriks.bentukSolusi();
+                        matriks.bentuksegitiga(X);
+                        if (jenisSolusi == 0){
+                            System.out.println("Solusi tidak ada.");
+                            matriks.printMat();
+                        } else if (jenisSolusi == 1){
+                            System.out.println("Solusi tunggal:");
+                            for (int i = 0; i < matriks.getRowLength(); i++) {
+                                System.out.printf("X%d = %.4f%n", i + 1, X[i]);
+                            }
+                            matriks.printMat();
+                         }else {
+                            System.out.println("Solusi banyak (parametrik):");
+                            matriks.banyakSolusi();
+                            matriks.printMat();
+                }
                         
 
                     }
@@ -97,13 +113,40 @@ public class Main {
                     if (pilihan2 == 1){
                         Matrix matriks = Matrix.readMatSPL();
                         matriks.gaussJordanEliminasi();
-                        matriks.printMat();
-
+                        int jenisSolusi = matriks.bentukSolusi();
+                        if (jenisSolusi == 0){
+                            System.out.println("Solusi tidak ada.");
+                            matriks.printMat();
+                        } else if (jenisSolusi == 1){
+                            System.out.println("Solusi tunggal:");
+                            for (int i = 0; i < matriks.getRowLength(); i++) {
+                                System.out.printf("X[%d] = %.4f%n", i + 1, matriks.mat[i][matriks.getColLength() - 1]);
+                            }
+                            matriks.printMat();
+                         }else {
+                            System.out.println("Solusi banyak (parametrik):");
+                            matriks.banyakSolusi();
+                            matriks.printMat();
+                        }
                     }
                     else if (pilihan2 == 2){
                         Matrix matriks = Matrix.readFile(); 
                         matriks.gaussJordanEliminasi();
-                        matriks.printMat();
+                        int jenisSolusi = matriks.bentukSolusi();
+                        if (jenisSolusi == 0){
+                            System.out.println("Solusi tidak ada.");
+                            matriks.printMat();
+                        } else if (jenisSolusi == 1){
+                            System.out.println("Solusi tunggal:");
+                            for (int i = 0; i < matriks.getRowLength(); i++) {
+                                System.out.printf("X[%d] = %.4f%n", i + 1, matriks.mat[i][matriks.getColLength() - 1]);
+                            }
+                            matriks.printMat();
+                         }else {
+                            System.out.println("Solusi banyak (parametrik):");
+                            matriks.banyakSolusi();
+                            matriks.printMat();
+                        }
 
                     }
                 }
