@@ -9,8 +9,10 @@ public class Bicubic {
         double val;
         Matrix xMat = new Matrix(16,16);
         for (int i=0; i<xMat.getRowLength(); i++) {
-            x = i % 2; y = (i/2) % 2;
-            k = 0; l = 0;
+            x = i % 2; 
+            y = (i/2) % 2;
+            k = 0; 
+            l = 0;
             for (int j=0; j<xMat.getColLength(); j++) {
                 val = 0.0;
                 if (i<4) val = Math.pow(x,k) * Math.pow(y,l);
@@ -102,7 +104,7 @@ public class Bicubic {
         // System.out.print("inversed ");
         // inversedX.printMat();
         Matrix a = Matrix.multiplyMatrix(inversedX, arr);
-        //a.printMat();
+        // a.printMat();
         double res = result(a,x,y);
         System.out.println("f("+Double.toString(x)+", "+Double.toString(y)+") = "+Double.toString(res));
     }

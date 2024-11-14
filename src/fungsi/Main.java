@@ -115,7 +115,9 @@ public class Main {
 
                     }
                     else if (pilihan2 == 2){
-
+                        Matrix matriks = Matrix.readFile();
+                        matriks.inverseGab();
+                        matriks.printMat();
                     }
                 }
                 else if (pilihan1 == 4){
@@ -125,7 +127,9 @@ public class Main {
                         matriks.printMat();
                     }
                     else if (pilihan2 == 2){
-
+                        Matrix matriks = Matrix.readFile();
+                        matriks.cramer();
+                        matriks.printMat(); 
                     }
                 }
 
@@ -157,13 +161,26 @@ public class Main {
                 
                 if (pilihan1 == 1){
                     if (pilihan2 == 1){
-
+                        Matrix matriks = Matrix.readMat();
+                        matriks.determinantCof();
+                        matriks.printMat();
                     }
                     else if (pilihan1 == 2){
-
+                        Matrix matriks = Matrix.readFile();
+                        matriks.determinantCof();
+                        matriks.printMat();
                     }
                 else if (pilihan1 == 2){
-
+                    if (pilihan2 == 1){
+                    Matrix matriks = Matrix.readMat();
+                        matriks.inversOBE();
+                        matriks.printMat();
+                    }
+                    else if (pilihan1 == 2){
+                        Matrix matriks = Matrix.readFile();
+                        matriks.inversOBE();
+                        matriks.printMat();
+                    }
                 }   
                 }
                 
@@ -174,7 +191,7 @@ public class Main {
                 System.out.println("                   Metode                   ");
                 System.out.println("--------------------------------------------");
                 System.out.println("1. Metode Adjoin");
-                System.out.println("2. Metode Matriks Identitas");
+                System.out.println("2. Metode OBE");
                 System.out.println("Masukkan pilihan anda : ");
                 int pilihan1 = sc.nextInt();
                 while (pilihan1 < 1 || pilihan1 > 4) {
@@ -195,13 +212,26 @@ public class Main {
                 }
                 if (pilihan1 == 1){
                     if (pilihan2 == 1){
-
+                        Matrix matriks = Matrix.readMat();
+                        matriks.inversadj();
+                        matriks.printMat();
                     }
                     else if (pilihan2 == 2){
-
+                        Matrix matriks = Matrix.readFile();
+                        matriks.inversadj();
+                        matriks.printMat();
                     }
                 else if (pilihan1 == 2){
-
+                    if (pilihan2 == 1){
+                        Matrix matriks = Matrix.readMat();
+                        matriks.inversOBE();
+                        matriks.printMat();
+                    }
+                    else if (pilihan2 == 2){
+                        Matrix matriks = Matrix.readFile();
+                        matriks.inversOBE();
+                        matriks.printMat();
+                    }
                 }
                 }
 
@@ -214,26 +244,7 @@ public class Main {
                 Bicubic.bicubicInterpolation();
                 
             } else if (pilihan == 6) {
-                System.out.println("Loading....................");
-                System.out.println("---------------------------------------------");
-                System.out.println("                Pilihan Input               ");
-                System.out.println("---------------------------------------------");
-                System.out.println("1. Input dari Keyboard");
-                System.out.println("2. Input dari File");
-                System.out.println("Masukkan pilihan anda : ");
-                int pilihan2 = sc.nextInt();
-                while (pilihan2 < 1 || pilihan2 > 2){
-                    System.out.println("Pilihan yang anda masukkan tidak valid, silahkan input ulang");
-                    pilihan2 = sc.nextInt();
-                }
-                if (pilihan2 == 1){
-                   Matrix matriks = new Matrix();
-                   matriks.readMat();
-
-                }
-                else if (pilihan2 == 2){
-                    
-                }
+                Regresi.linearRegression();
                 
 
             } else if (pilihan == 7) {
