@@ -129,9 +129,12 @@ public class Regresi {
     // fungsi utama
     public static void linearRegression() {
         int choice;
-        System.out.println("Apakah ingin ketik manual atau baca dari file?");
-        System.out.println("1. Ketik manual");
-        System.out.println("2. Baca dari file");
+        System.out.println("---------------------------------------------");
+        System.out.println("                Pilihan Input               ");
+        System.out.println("---------------------------------------------");
+        System.out.println("1. Input dari Keyboard");
+        System.out.println("2. Input dari File");
+        System.out.println("Masukkan pilihan anda : ");
         Scanner sc = new Scanner(System.in);
         choice = sc.nextInt(); sc.nextLine();
         if (choice==1) {
@@ -177,9 +180,6 @@ public class Regresi {
         }
         sc.close();
     }
-    public static void main(String[] args) {
-        linearRegression();
-    }
 
     /***Regresi Kuadratik Berganda***/
-}
+    }

@@ -33,15 +33,24 @@ public class Matrix {
     }
     
     // Memasukkan nilai ke matriks secara manual (dari input)
-    public void readMat() {
+    public static Matrix readMat() {
+        int i, j;
+        int nRow, nCol;
         Scanner sc = new Scanner(System.in);
-        for (int i = 0; i < nRow; i++) {
-            for (int j = 0; j < nCol; j++) {
-                mat[i][j] = sc.nextDouble();
+
+        System.out.print("Masukkan jumlah baris: ");
+        nRow = sc.nextInt();
+        System.out.print("Masukkan jumlah kolom: ");
+        nCol = sc.nextInt();
+
+        Matrix matriksA = new Matrix(nRow, nCol);
+        System.out.println("Masukkan elemen matriks A: ");
+        for (i = 0; i < nRow; i++) {
+            for (j = 0; j < nCol; j++) {
+                matriksA.mat[i][j] = sc.nextDouble();
             }
         }
-        sc.nextLine();
-        sc.close();
+        return matriksA;
     }
 
     public static Matrix readMatSPL() {
@@ -91,7 +100,7 @@ public class Matrix {
     } 
     // Memasukkan nilai ke matriks dari file
     public void readMatFile(String fileName) {
-        try (BufferedReader br = new BufferedReader(new FileReader("../../test/"+fileName+".txt"))) {
+        try (BufferedReader br = new BufferedReader(new FileReader("test/"+fileName+".txt"))) {
             String line;
             int colCount = 0;
             int rowCount = 0;
@@ -106,7 +115,7 @@ public class Matrix {
             nCol = colCount;
             mat = new double[nRow][nCol];
 
-            try (BufferedReader lines = new BufferedReader(new FileReader("..././test/"+fileName+".txt"))) {
+            try (BufferedReader lines = new BufferedReader(new FileReader("test/"+fileName+".txt"))) {
                 int currRow = 0;
                 while ((line=lines.readLine()) != null) {
                     String[] values = line.trim().split("\\s+");
