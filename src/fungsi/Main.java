@@ -10,6 +10,7 @@ public class Main {
         boolean state = true;
 
         while (state) {
+           
             System.out.println("Loading....................");
             System.out.println("---------------------------------------------");
             System.out.println("         __________  _____                            ");
@@ -88,7 +89,23 @@ public class Main {
                     else if (pilihan2 == 2){
                         Matrix matriks = Matrix.readFile();
                         matriks.gaussEliminasi();
-                        matriks.printMat();
+                        double X[] = new double[matriks.getRowLength()];
+                        int jenisSolusi = matriks.bentukSolusi();
+                        matriks.bentuksegitiga(X);
+                        if (jenisSolusi == 0){
+                            System.out.println("Solusi tidak ada.");
+                            matriks.printMat();
+                        } else if (jenisSolusi == 1){
+                            System.out.println("Solusi tunggal:");
+                            for (int i = 0; i < matriks.getRowLength(); i++) {
+                                System.out.printf("X%d = %.4f%n", i + 1, X[i]);
+                            }
+                            matriks.printMat();
+                         }else {
+                            System.out.println("Solusi banyak (parametrik):");
+                            matriks.banyakSolusi();
+                            matriks.printMat();
+                }
                         
 
                     }
@@ -97,39 +114,63 @@ public class Main {
                     if (pilihan2 == 1){
                         Matrix matriks = Matrix.readMatSPL();
                         matriks.gaussJordanEliminasi();
-                        matriks.printMat();
-
+                        int jenisSolusi = matriks.bentukSolusi();
+                        if (jenisSolusi == 0){
+                            System.out.println("Solusi tidak ada.");
+                            matriks.printMat();
+                        } else if (jenisSolusi == 1){
+                            System.out.println("Solusi tunggal:");
+                            for (int i = 0; i < matriks.getRowLength(); i++) {
+                                System.out.printf("X[%d] = %.4f%n", i + 1, matriks.mat[i][matriks.getColLength() - 1]);
+                            }
+                            matriks.printMat();
+                         }else {
+                            System.out.println("Solusi banyak (parametrik):");
+                            matriks.banyakSolusi();
+                            matriks.printMat();
+                        }
                     }
                     else if (pilihan2 == 2){
                         Matrix matriks = Matrix.readFile(); 
                         matriks.gaussJordanEliminasi();
-                        matriks.printMat();
+                        int jenisSolusi = matriks.bentukSolusi();
+                        if (jenisSolusi == 0){
+                            System.out.println("Solusi tidak ada.");
+                            matriks.printMat();
+                        } else if (jenisSolusi == 1){
+                            System.out.println("Solusi tunggal:");
+                            for (int i = 0; i < matriks.getRowLength(); i++) {
+                                System.out.printf("X[%d] = %.4f%n", i + 1, matriks.mat[i][matriks.getColLength() - 1]);
+                            }
+                            matriks.printMat();
+                         }else {
+                            System.out.println("Solusi banyak (parametrik):");
+                            matriks.banyakSolusi();
+                            matriks.printMat();
+                        }
 
                     }
                 }
                 else if (pilihan1 == 3){
                     if (pilihan2 == 1){
                         Matrix matriks = Matrix.readMatSPL();
-                        matriks.inverseGab();
-                        matriks.printMat();
+                        Matrix matriks_balikan = matriks.inverseGab();
 
                     }
                     else if (pilihan2 == 2){
                         Matrix matriks = Matrix.readFile();
-                        matriks.inverseGab();
-                        matriks.printMat();
+                        
                     }
                 }
                 else if (pilihan1 == 4){
                     if (pilihan2 == 1){
                         Matrix matriks = Matrix.readMatSPL();
                         matriks.cramer();
-                        matriks.printMat();
+
                     }
                     else if (pilihan2 == 2){
                         Matrix matriks = Matrix.readFile();
                         matriks.cramer();
-                        matriks.printMat(); 
                     }
                 }
 
@@ -139,7 +180,7 @@ public class Main {
                 System.out.println("                   Metode                   ");
                 System.out.println("--------------------------------------------");
                 System.out.println("1. Metode kofaktor");
-                System.out.println("2. Metode OBE");
+                System.out.println("2. Metode Reduksi");
                 System.out.println("Masukkan pilihan anda : ");
                 int pilihan1 = sc.nextInt();
                 while (pilihan1 < 1 || pilihan1 > 4) {
@@ -162,27 +203,26 @@ public class Main {
                 if (pilihan1 == 1){
                     if (pilihan2 == 1){
                         Matrix matriks = Matrix.readMat();
-                        matriks.determinantCof();
-                        matriks.printMat();
+                        System.out.println("Determinant : " + matriks.determinantCof());
                     }
-                    else if (pilihan1 == 2){
+                    else if (pilihan2 == 2){
                         Matrix matriks = Matrix.readFile();
-                        matriks.determinantCof();
-                        matriks.printMat();
+                        System.out.println("Determinant : " + matriks.determinantCof());
                     }
                 else if (pilihan1 == 2){
                     if (pilihan2 == 1){
-                    Matrix matriks = Matrix.readMat();
-                        matriks.inversOBE();
-                        matriks.printMat();
+                        System.out.println("line 217 printed");
+                        Matrix matriks = Matrix.readMat();
+                        System.out.println("Determinant : " + matriks.determinantRed());
+                       
                     }
-                    else if (pilihan1 == 2){
+                    else if (pilihan2 == 2){
                         Matrix matriks = Matrix.readFile();
-                        matriks.inversOBE();
-                        matriks.printMat();
+                        System.out.println("Determinant : " + matriks.determinantRed());
+                        
                     }
                 }   
-                }
+            }
                 
 
             } else if (pilihan == 3) {
@@ -213,26 +253,26 @@ public class Main {
                 if (pilihan1 == 1){
                     if (pilihan2 == 1){
                         Matrix matriks = Matrix.readMat();
-                        matriks.inversadj();
-                        matriks.printMat();
+                        Matrix matriks_adjoint = matriks.inversadj();
+                        matriks_adjoint.printMat();
                     }
                     else if (pilihan2 == 2){
                         Matrix matriks = Matrix.readFile();
-                        matriks.inversadj();
-                        matriks.printMat();
+                        Matrix matriks_adjoint = matriks.inversadj();
+                        matriks_adjoint.printMat();
                     }
                 else if (pilihan1 == 2){
                     if (pilihan2 == 1){
                         Matrix matriks = Matrix.readMat();
                         matriks.inversOBE();
                         matriks.printMat();
-                    }
+                        }
                     else if (pilihan2 == 2){
                         Matrix matriks = Matrix.readFile();
                         matriks.inversOBE();
                         matriks.printMat();
+                        }
                     }
-                }
                 }
 
                 
