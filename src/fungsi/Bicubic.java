@@ -1,5 +1,7 @@
 package fungsi;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Scanner;
 
 public class Bicubic {
@@ -87,7 +89,14 @@ public class Bicubic {
         double y = matPointAndY.getElmt(matPointAndY.getRowLength()-1,1);
         return y;
     }
-
+    private static void writeToFile(String fileName, String content) {
+        try (FileWriter writer = new FileWriter(fileName, true)) {
+            writer.write(content + System.lineSeparator());
+        } catch (IOException e) {
+            System.out.println("An error occurred while writing to the file.");
+            e.printStackTrace();
+        }
+    }
     public static void bicubicInterpolation() {
         Matrix mat = Matrix.readFile();
         Matrix matPoint = readPointFile(mat);
@@ -106,7 +115,11 @@ public class Bicubic {
         Matrix a = Matrix.multiplyMatrix(inversedX, arr);
         // a.printMat();
         double res = result(a,x,y);
+        String resultString = "f(" + x + ", " + y + ") = " + res;
         System.out.println("f("+Double.toString(x)+", "+Double.toString(y)+") = "+Double.toString(res));
+        writeToFile("bicubic .txt", resultString);
+
+
     }
 
 }
