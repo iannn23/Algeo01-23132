@@ -1,4 +1,6 @@
 package fungsi;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Scanner;
 
 public class Regresi {
@@ -25,6 +27,14 @@ public class Regresi {
     public static double readXFile(Matrix matPointAndX) {
         double x = matPointAndX.getElmt(matPointAndX.getRowLength()-1,0);
         return x;
+    }
+    private static void writeToFile(String fileName, String content) {
+    try (FileWriter writer = new FileWriter(fileName, true)) {
+        writer.write(content + System.lineSeparator());
+    } catch (IOException e) {
+        System.out.println("An error occurred while writing to the file.");
+        e.printStackTrace();
+        }
     }
     // //pisah x yang akan ditaksir pada file dari titik
     // public static double readYFile(Matrix matPointAndX) {
@@ -174,7 +184,7 @@ public class Regresi {
             String equation = getRegEq(matSolved);
             String taks = taksiranReg(matSolved, variableVal);
             //Persamaan regresi linear berganda dan taksiran
-            System.out.println("Regresi Linear Berganda: "+equation+", "+taks);
+            writeToFile("regresi linear.txt", "Regresi Linear Berganda: " + equation + ", " + taks);
         } else {
             System.out.println("Ketik '1' atau '2'.");
         }
