@@ -890,46 +890,40 @@ public class Matrix {
         }
     }
 
-    // public String[] SPLInvers(Matrix mat, int m, int n) {
-    //     Matrix matA = new Matrix(m, n-1);
-    //     Matrix matB = new Matrix(m, 1);
+    public String[] SPLInvers(Matrix mat, int m, int n) {
+        Matrix matA = new Matrix(m, n-1);
+        Matrix matB = new Matrix(m, 1);
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n-1; j++) {
+                matA.setElmt(i, j, mat.getElmt(i, j));
+            }
+        }
+        for (int i = 0; i < m; i++) {
+            matB.setElmt(i, 0, mat.getElmt(i, n-1));
+        }
     
-    //     // isi matriks A
-    //     for (int i = 0; i < m; i++) {
-    //         for (int j = 0; j < n-1; j++) {
-    //             matA.setElmt(i, j, mat.getElmt(i, j));
-    //         }
-    //     }
+        Matrix copyMatA = matA.copyMat();
     
-    //     // isi matriks B
-    //     for (int i = 0; i < m; i++) {
-    //         matB.setElmt(i, 0, mat.getElmt(i, n-1));
-    //     }
-    
-    //     Matrix copyMatA = matA.copyMat();
-    
-    //     if (copyMatA.determinantCof() == 0) {
-    //         String[] solusi = new String[1];
-    //         solusi[0] = "Tidak ada solusi karena determinan matriks A adalah 0.";
-    //         return solusi;
-
-    //     } else {
-    //         Matrix inverseMatA = copyMatA.inversadj();
-    //         Matrix resultMat = multiplyMatrix(inverseMatA, matB);
-    //         String[] solusi = new String[m];
-    //         for (int i = 0; i < m; i++) {
-    //             solusi[i] = "x" + (i+1) + " = " + resultMat.getElmt(i, 0);
-    //         }
-    //         return solusi;
-    //     }
-    // }
+        if (copyMatA.determinantCof() == 0) {
+            String[] solusi = new String[1];
+            solusi[0] = "Tidak ada solusi karena determinan matriks A adalah 0.";
+            return solusi;
+        } else {
+            Matrix inverseMatA = matA.inversadj();
+            Matrix resultMat = multiplyMatrix(inverseMatA, matB);
+            String[] solusi = new String[resultMat.getRowLength()];
+            for (int i = 0; i < resultMat.getRowLength(); i++) {
+                solusi[i] = "x" + (i+1) + " = " + resultMat.getElmt(i, 0);
+            }
+            return solusi;
+        }
+    }
     // public static void main(String[] args) {
-    //     Matrix m = new Matrix();
+    //     Matrix m = readMatSPL();
     //     String[] solusi = m.SPLInvers(m, m.getRowLength(), m.getColLength());
     //     for (int i = 0; i < solusi.length; i++){
     //         System.out.println(solusi[i]);
     //         }
-
     //     }
     
 }
