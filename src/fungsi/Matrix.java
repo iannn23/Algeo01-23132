@@ -2,6 +2,7 @@ package fungsi;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
 
@@ -142,6 +143,16 @@ public class Matrix {
         }
     }
 
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < this.nRow; i++) {
+            for (int j = 0; j < this.nCol; j++) {
+                sb.append(mat[i][j]).append(" ");
+            }
+            sb.append(System.lineSeparator());
+        }
+        return sb.toString();
+    }
     // Setter dan Getter
     public void setElmt(int i, int j, double elmt) {
         mat[i][j] = elmt;
@@ -303,7 +314,6 @@ public class Matrix {
 		Matrix mOut = multiplyMatrix(mInvers, mConstant);
 		return mOut;
 	}
-
     // Penyederhanaan/Pembagian 1 baris dengan bilangan
     public void divRowByNum(int row, double div) {
         for (int j = 0; j < nCol; j++) {
@@ -889,7 +899,6 @@ public class Matrix {
             }
         }
     }
-
     public String[] SPLInvers(Matrix mat, int m, int n) {
         Matrix matA = new Matrix(m, n-1);
         Matrix matB = new Matrix(m, 1);
@@ -918,12 +927,4 @@ public class Matrix {
             return solusi;
         }
     }
-    // public static void main(String[] args) {
-    //     Matrix m = readMatSPL();
-    //     String[] solusi = m.SPLInvers(m, m.getRowLength(), m.getColLength());
-    //     for (int i = 0; i < solusi.length; i++){
-    //         System.out.println(solusi[i]);
-    //         }
-    //     }
-    
 }
