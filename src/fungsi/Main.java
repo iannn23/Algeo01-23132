@@ -209,7 +209,7 @@ public class Main {
                         Matrix matriks = Matrix.readFile();
                         System.out.println("Determinant : " + matriks.determinantCof());
                     }
-                else if (pilihan1 == 2){
+                }else if (pilihan1 == 2){
                     if (pilihan2 == 1){
                         System.out.println("line 217 printed");
                         Matrix matriks = Matrix.readMat();
@@ -261,7 +261,7 @@ public class Main {
                         Matrix matriks_adjoint = matriks.inversadj();
                         matriks_adjoint.printMat();
                     }
-                else if (pilihan1 == 2){
+                }else if (pilihan1 == 2){
                     if (pilihan2 == 1){
                         Matrix matriks = Matrix.readMat();
                         matriks.inversOBE();
