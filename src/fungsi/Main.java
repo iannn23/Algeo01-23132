@@ -104,7 +104,8 @@ public class Main {
                             System.out.println("Solusi banyak (parametrik):");
                             matriks.banyakSolusi();
                             matriks.printMat();
-                }
+                        }
+                        
                         
 
                     }

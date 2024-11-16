@@ -296,6 +296,11 @@ public class Matrix {
 		}
 		return mOut;
 	}
+
+    public void inversSPL(){
+        
+
+    }
     public Matrix inverseGab() {
 		Matrix mInvers = this.getMatrixCoefficient();
 		Matrix mConstant = this.getMatrixConstant();
@@ -513,21 +518,21 @@ public class Matrix {
 
     // Aturan Cramer (NOTE: PAKAI MATRIKS AUGMENTED, jangan matriks A langsung)
     public Matrix cramer() {
-        Matrix A = this.matrixA();
-        Matrix b = this.matrixb();
-
-        Matrix detXi = new Matrix(nRow, 1);
-        double detA = A.determinantCof();
-
-        for (int j = 0; j < nCol - 1; j++) {
-            Matrix Ai = A.copyMat();
-            for (int i = 0; i < nRow; i++) {
-                Ai.mat[i][j] = b.mat[i][0];
-            }
-            double detAi = Ai.determinantCof();
-            detXi.mat[j][0] = detAi / detA;
+        double detA = this.matrixA().determinantCof();
+        if (detA == 0) {
+            System.out.println("Determinan matriks A = 0, tidak bisa menggunakan aturan Cramer");
+            return null;
         }
-        return detXi;
+
+        for (int i = 0; i < this.nRow; i++) {
+            Matrix temp = this.copyMat();
+            for (int j = 0; j < this.nRow; j++) {
+                temp.setElmt(j, i, this.getElmt(j, this.nCol - 1));
+            }
+            double detTemp = temp.determinantCof();
+            System.out.printf("X%d = %.4f%n", i + 1, detTemp / detA);
+        }
+        return this;
     }
 
     // Eliminasi Gauss
