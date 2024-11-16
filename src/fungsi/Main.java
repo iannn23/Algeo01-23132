@@ -1,9 +1,20 @@
 package fungsi;
 
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Scanner;
 
 public class Main {
+    private static void writeToFile(String fileName, String content) {
+        try (FileWriter writer = new FileWriter(fileName, true)) {
+            writer.write(content + System.lineSeparator());
+        } catch (IOException e) {
+            System.out.println("An error occurred while writing to the file.");
+            e.printStackTrace();
+        }
+    }
+    
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
 
@@ -83,6 +94,7 @@ public class Main {
                             System.out.println("Solusi banyak (parametrik):");
                             matriks.banyakSolusi();
                             matriks.printMat();
+
                 }
                         
                     }
@@ -95,19 +107,23 @@ public class Main {
                         if (jenisSolusi == 0){
                             System.out.println("Solusi tidak ada.");
                             matriks.printMat();
+                            writeToFile("gauss eliminasi.txt", "Solusi tidak ada.\n" + matriks.toString());
                         } else if (jenisSolusi == 1){
-                            System.out.println("Solusi tunggal:");
+                            StringBuilder result = new StringBuilder("Solusi tunggal:\n");
                             for (int i = 0; i < matriks.getRowLength(); i++) {
+                                String solution = String.format("X%d = %.4f%n", i + 1, X[i]);
                                 System.out.printf("X%d = %.4f%n", i + 1, X[i]);
+                                result.append(solution);
                             }
                             matriks.printMat();
-                         }else {
+                            result.append(matriks.toString());
+                            writeToFile("gauss eliminasi.txt", result.toString());
+                        }else {
                             System.out.println("Solusi banyak (parametrik):");
                             matriks.banyakSolusi();
                             matriks.printMat();
-                }
-                        
-
+                            writeToFile("gauss eliminasi.txt", "Solusi banyak (parametrik):\n" + matriks.toString());
+                        }
                     }
                 }
                 else if (pilihan1 == 2){
@@ -136,17 +152,20 @@ public class Main {
                         int jenisSolusi = matriks.bentukSolusi();
                         if (jenisSolusi == 0){
                             System.out.println("Solusi tidak ada.");
-                            matriks.printMat();
+                            writeToFile("gauss eliminasi jordan.txt", "Solusi tidak ada.\n" + matriks.toString());
                         } else if (jenisSolusi == 1){
-                            System.out.println("Solusi tunggal:");
+                            StringBuilder result = new StringBuilder("Solusi tunggal:\n");
                             for (int i = 0; i < matriks.getRowLength(); i++) {
                                 System.out.printf("X[%d] = %.4f%n", i + 1, matriks.mat[i][matriks.getColLength() - 1]);
+                                String solution = String.format("X[%d] = %.4f%n", i + 1, matriks.mat[i][matriks.getColLength() - 1]);
+                                result.append(solution);
                             }
-                            matriks.printMat();
+                            result.append(matriks.toString());
+                            writeToFile("gauss eliminasi jordan.txt", result.toString());
                          }else {
                             System.out.println("Solusi banyak (parametrik):");
                             matriks.banyakSolusi();
-                            matriks.printMat();
+                            writeToFile("gauss eliminasi jordan.txt", "Solusi banyak (parametrik):\n" + matriks.toString());
                         }
 
                     }
@@ -162,9 +181,12 @@ public class Main {
                     else if (pilihan2 == 2){
                         Matrix matriks = Matrix.readFile();
                         String[] solusi = matriks.SPLInvers(matriks, matriks.getRowLength(), matriks.getColLength());
+                        StringBuilder result = new StringBuilder("Solusi Invers:\n");
                         for (int i = 0; i < solusi.length; i++){
                             System.out.println(solusi[i]);
+                            result.append(solusi[i]).append("\n");
                         }
+                        writeToFile("invers.txt", result.toString());
                         
                     }
                 }
@@ -176,7 +198,7 @@ public class Main {
                     }
                     else if (pilihan2 == 2){
                         Matrix matriks = Matrix.readFile();
-                        matriks.cramer();
+                        writeToFile("cramer.txt", "Cramer : " + matriks.cramer());
                     }
                 }
 
@@ -189,7 +211,7 @@ public class Main {
                 System.out.println("2. Metode Reduksi");
                 System.out.println("Masukkan pilihan anda : ");
                 int pilihan1 = sc.nextInt();
-                while (pilihan1 < 1 || pilihan1 > 4) {
+                while (pilihan1 < 1 || pilihan1 > 2) {
                     System.out.println("Pilihan yang anda masukkan tidak valid, silahkan input ulang");
                     pilihan1 = sc.nextInt();
                 }
@@ -214,10 +236,11 @@ public class Main {
                     else if (pilihan2 == 2){
                         Matrix matriks = Matrix.readFile();
                         System.out.println("Determinant : " + matriks.determinantCof());
+                        writeToFile("determinan kofaktor.txt", "Determinant : " + matriks.determinantCof());
                     }
-                }else if (pilihan1 == 2){
+                }
+                else if (pilihan1 == 2){
                     if (pilihan2 == 1){
-                        System.out.println("line 217 printed");
                         Matrix matriks = Matrix.readMat();
                         System.out.println("Determinant : " + matriks.determinantRed());
                        
@@ -225,9 +248,13 @@ public class Main {
                     else if (pilihan2 == 2){
                         Matrix matriks = Matrix.readFile();
                         System.out.println("Determinant : " + matriks.determinantRed());
+                        writeToFile("determinan reduksi.txt", "Determinant : " + matriks.determinantCof());
                         
                     }
                 }   
+            
+                
+
             } else if (pilihan == 3) {
                 System.out.println("Loading....................");
                 System.out.println("--------------------------------------------");
@@ -262,20 +289,22 @@ public class Main {
                     else if (pilihan2 == 2){
                         Matrix matriks = Matrix.readFile();
                         Matrix matriks_adjoint = matriks.inversadj();
-                        matriks_adjoint.printMat();
+                        writeToFile("invers adjoint.txt", "invers adjoint : " + matriks_adjoint);
                     }
                 }else if (pilihan1 == 2){
                     if (pilihan2 == 1){
                         Matrix matriks = Matrix.readMat();
                         matriks.inversOBE();
                         matriks.printMat();
-                    }
+                        }
                     else if (pilihan2 == 2){
                         Matrix matriks = Matrix.readFile();
-                        matriks.inversOBE();
-                        matriks.printMat();
-                    }
+                        writeToFile("invers OBE.txt", "invers OBE : " + matriks.inversOBE());
+                        }
                 }
+                
+
+                
 
             } else if (pilihan == 4) {
                 Polinom.polynomialInterpolation();
