@@ -1,8 +1,18 @@
 package fungsi;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Scanner;
 
 
 public class Polinom {
+    private static void writeToFile(String fileName, String content) {
+        try (FileWriter writer = new FileWriter(fileName, true)) {
+            writer.write(content + System.lineSeparator());
+        } catch (IOException e) {
+            System.out.println("An error occurred while writing to the file.");
+            e.printStackTrace();
+        }
+    }
     
     // baca titik dari keyboard
     public static Matrix readPoint() {
@@ -171,7 +181,7 @@ public class Polinom {
             }
             result += a[0];
             equation += Double.toString(a[0])+", f("+Double.toString(x)+") = "+Double.toString(result);
-            System.out.println(equation);
+            writeToFile("polynomial interpolation.txt", equation.toString());
         } else System.out.println("Ketik '1' atau '2'.");
         sc.close();
     }
