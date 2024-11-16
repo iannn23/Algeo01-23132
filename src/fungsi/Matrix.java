@@ -43,16 +43,25 @@ public class Matrix {
         System.out.print("Masukkan jumlah kolom: ");
         nCol = sc.nextInt();
 
-        Matrix matriksA = new Matrix(nRow, nCol);
-        System.out.println("Masukkan elemen matriks A: ");
+        Matrix matriks = new Matrix(nRow, nCol);
+        System.out.println("Masukkan elemen matriks: ");
         for (i = 0; i < nRow; i++) {
             for (j = 0; j < nCol; j++) {
-                matriksA.mat[i][j] = sc.nextDouble();
+                matriks.mat[i][j] = sc.nextDouble();
             }
         }
-        return matriksA;
+        return matriks;
     }
-
+    public void readMat2() {
+        Scanner sc = new Scanner(System.in);
+        for (int i = 0; i < nRow; i++) {
+            for (int j = 0; j < nCol; j++) {
+                mat[i][j] = sc.nextDouble();
+            }
+        }
+        sc.nextLine();
+        sc.close();
+    }
     public static Matrix readMatSPL() {
         int i, j;
         int nRow, nCol;
@@ -451,6 +460,20 @@ public class Matrix {
         }
     }
 
+    // Substitusi mundur
+    public void backSubstitution(double[] X) {
+        int i, j;
+        int n = this.getRowLength();
+        int m = this.getColLength();
+
+        for (i = n - 1; i >= 0; i--) {
+            X[i] = this.getElmt(i, m - 1);
+            for (j = i + 1; j < n; j++) {
+                X[i] -= this.getElmt(i, j) * X[j];
+            }
+            X[i] /= this.getElmt(i, i);
+        }
+    }
 
     // Determinan Matriks (reduksi baris)
     public double determinantRed() {
@@ -482,17 +505,17 @@ public class Matrix {
                 if (this.retrieveELMT(0, j) != 0) {
                     Matrix subMat = new Matrix(nRow - 1, nCol - 1);
                     this.getCofactor(subMat, 0, j, nRow);
-                    int iSub = 0;
-                    for (int i = 1; i < nRow; i++) {
-                        int jSub = 0;
-                        for (int k = 0; k < nCol; k++) {
-                            if (k != j) {
-                                subMat.inputELMT(iSub, jSub, retrieveELMT(i, k));
-                                jSub++;
-                            }
-                        }
-                        iSub++;
-                    }
+                    // int iSub = 0;
+                    // for (int i = 1; i < nRow; i++) {
+                    //     int jSub = 0;
+                    //     for (int k = 0; k < nCol; k++) {
+                    //         if (k != j) {
+                    //             subMat.inputELMT(iSub, jSub, retrieveELMT(i, k));
+                    //             jSub++;
+                    //         }
+                    //     }
+                    //     iSub++;
+                    // }
                     det += plusMinus * retrieveELMT(0, j) * subMat.determinantCof(); // Rekursif
                 }
                 plusMinus *= -1;
@@ -517,6 +540,7 @@ public class Matrix {
             }
             double detAi = Ai.determinantCof();
             detXi.mat[j][0] = detAi / detA;
+            System.out.println("x"+(j+1)+" = "+detXi.mat[j][0]);
         }
         return detXi;
     }
@@ -800,7 +824,7 @@ public class Matrix {
 		return this;
 	}
     public Matrix adjoint(){
-        Matrix cofactor = cofMatrix();
+        Matrix cofactor = this.cofMatrix();
         Matrix adjugate = new Matrix(nRow, nCol);
         for (int i=0; i<nRow; i++){
             for (int j=0; j<nCol; j++){
@@ -811,17 +835,17 @@ public class Matrix {
     }
     public Matrix inversadj(){
         //kalau determinannya == 0  error
-        double det = determinantCof();
+        double det = this.determinantCof();
         if  (det == 0){
             System.out.println("Determinan = 0 ");
             return null;
         }
         Matrix mat_inv = new Matrix(nRow, nCol);
-        Matrix adj = adjoint();
-
+        Matrix adj = this.adjoint();
         for (int i=0; i<nRow; i++){
             for (int j=0; j<nCol; j++){
-                mat_inv.setElmt(i, j, adj.getElmt(i, j) / det);
+                double div = adj.getElmt(i, j)/det;
+                mat_inv.setElmt(i, j, div);
             }
         }
         return mat_inv;
@@ -866,4 +890,46 @@ public class Matrix {
         }
     }
 
+    // public String[] SPLInvers(Matrix mat, int m, int n) {
+    //     Matrix matA = new Matrix(m, n-1);
+    //     Matrix matB = new Matrix(m, 1);
+    
+    //     // isi matriks A
+    //     for (int i = 0; i < m; i++) {
+    //         for (int j = 0; j < n-1; j++) {
+    //             matA.setElmt(i, j, mat.getElmt(i, j));
+    //         }
+    //     }
+    
+    //     // isi matriks B
+    //     for (int i = 0; i < m; i++) {
+    //         matB.setElmt(i, 0, mat.getElmt(i, n-1));
+    //     }
+    
+    //     Matrix copyMatA = matA.copyMat();
+    
+    //     if (copyMatA.determinantCof() == 0) {
+    //         String[] solusi = new String[1];
+    //         solusi[0] = "Tidak ada solusi karena determinan matriks A adalah 0.";
+    //         return solusi;
+
+    //     } else {
+    //         Matrix inverseMatA = copyMatA.inversadj();
+    //         Matrix resultMat = multiplyMatrix(inverseMatA, matB);
+    //         String[] solusi = new String[m];
+    //         for (int i = 0; i < m; i++) {
+    //             solusi[i] = "x" + (i+1) + " = " + resultMat.getElmt(i, 0);
+    //         }
+    //         return solusi;
+    //     }
+    // }
+    // public static void main(String[] args) {
+    //     Matrix m = new Matrix();
+    //     String[] solusi = m.SPLInvers(m, m.getRowLength(), m.getColLength());
+    //     for (int i = 0; i < solusi.length; i++){
+    //         System.out.println(solusi[i]);
+    //         }
+
+    //     }
+    
 }
